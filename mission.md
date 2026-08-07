@@ -1,9 +1,11 @@
 # Core mission
 
-The network is a peer-led, globally inclusive consortium serving as a committee,
-forum, and collective voice to advocate, educate, and set standards for open,
-reproducible and reliable research practices in computational biology,
-biomedical informatics and related fields.
+The Reproducibility Network for Computational Biology (RN4CB) is a peer-led,
+globally inclusive consortium serving as a forum and voice to advocate,
+educate, and set standards for open and reproducible research practices.
+
+Our aim is to raise the quality and trustworthiness of research in computational
+biology, medical informatics, and related data science fields.
 
 ## Background
 

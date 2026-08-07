@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CompBio Reproducibility Network</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal-deep:   #0D4F5C;
+      --teal-mid:    #3D5A6C;
+      --teal-light:  #E0F2F1;
+      --coral:       #E8714A;
+      --coral-light: #FDF0EB;
+      --offwhite:    #F7F9F8;
+      --white:       #FFFFFF;
+      --ink:         #1A2B31;
+      --ink-muted:   #4A6470;
+      --border:      #C8DADF;
+      --serif:       'DM Serif Display', Georgia, serif;
+      --sans:        'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); color: var(--ink); background: var(--offwhite); line-height: 1.6; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--teal-deep);
+      border-bottom: 3px solid var(--coral);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      min-height: 64px;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none; color: var(--white);
+    }
+    .nav-logo {
+      width: 38px; height: 38px;
+    }
+    .nav-brand-text {
+      display: flex; flex-direction: column; line-height: 1.15;
+    }
+    .nav-brand-text strong {
+      font-family: var(--serif); font-size: 1.05rem; color: var(--white);
+    }
+    .nav-brand-text span {
+      font-size: 0.68rem; color: rgba(255,255,255,0.65); letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 0.2rem; list-style: none;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.82); text-decoration: none;
+      font-size: 0.82rem; font-weight: 500; letter-spacing: 0.02em;
+      padding: 6px 12px; border-radius: 4px;
+      transition: background 0.18s, color 0.18s;
+      white-space: nowrap;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--white); background: rgba(255,255,255,0.12);
+    }
+    .nav-links a.nav-cta {
+      background: var(--coral); color: var(--white); margin-left: 6px;
+    }
+    .nav-links a.nav-cta:hover { background: #d45f38; }
+
+    /* hamburger */
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+    .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--white); margin: 5px 0; border-radius: 2px; transition: 0.3s; }
+
+    /* ─── PAGES ─── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: var(--teal-deep);
+      position: relative; overflow: hidden;
+      padding: 5rem 2rem 4.5rem;
+      text-align: center;
+    }
+    .hero-svg {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      opacity: 0.07; pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--coral); margin-bottom: 1.2rem;
+    }
+    .hero h1 {
+      font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 3.8rem);
+      color: var(--white); line-height: 1.18; max-width: 780px; margin: 0 auto 1.4rem;
+    }
+    .hero p {
+      font-size: 1.1rem; color: rgba(255,255,255,0.75);
+      max-width: 640px; margin: 0 auto 2.2rem; line-height: 1.7;
+    }
+    .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-block; padding: 0.75rem 1.75rem;
+      border-radius: 6px; font-weight: 600; font-size: 0.92rem;
+      cursor: pointer; border: none; text-decoration: none; transition: 0.2s;
+    }
+    .btn-primary { background: var(--coral); color: var(--white); }
+    .btn-primary:hover { background: #d45f38; }
+    .btn-outline { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.45); }
+    .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.08); }
+    .btn-teal { background: var(--teal-deep); color: var(--white); }
+    .btn-teal:hover { background: #09404b; }
+
+    /* ─── STATS STRIP ─── */
+    .stats-strip {
+      background: var(--teal-light); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 0;
+    }
+    .stat {
+      padding: 1.5rem 2.5rem; text-align: center; border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat strong { display: block; font-family: var(--serif); font-size: 2rem; color: var(--teal-deep); }
+    .stat span { font-size: 0.8rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.07em; }
+
+    /* ─── SECTIONS ─── */
+    .section { padding: 4.5rem 2rem; max-width: 1100px; margin: 0 auto; }
+    .section-full { padding: 4.5rem 2rem; background: var(--white); }
+    .section-full .section { padding-top: 0; padding-bottom: 0; }
+    .section-mint { background: var(--teal-light); }
+    .section-mint .section { padding-top: 0; padding-bottom: 0; }
+
+    .section-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--coral); margin-bottom: 0.8rem;
+    }
+    h2.section-title {
+      font-family: var(--serif); font-size: clamp(1.7rem, 3vw, 2.6rem);
+      color: var(--teal-deep); line-height: 1.25; margin-bottom: 1.2rem;
+    }
+    .section-intro {
+      font-size: 1.05rem; color: var(--ink-muted); max-width: 680px; line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ─── CARDS ─── */
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+      padding: 1.75rem; transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .card:hover { box-shadow: 0 8px 28px rgba(13,79,92,0.1); transform: translateY(-2px); }
+    .card-icon {
+      width: 44px; height: 44px; background: var(--teal-light); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 1.1rem;
+      font-size: 1.25rem;
+    }
+    .card h3 { font-family: var(--serif); font-size: 1.2rem; color: var(--teal-deep); margin-bottom: 0.5rem; }
+    .card p { font-size: 0.9rem; color: var(--ink-muted); line-height: 1.65; }
+
+    /* ─── PILLAR GRID (mission) ─── */
+    .pillar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-top: 2.5rem; }
+    .pillar {
+      border-left: 3px solid var(--coral); padding: 1.25rem 1.25rem 1.25rem 1.4rem;
+      background: var(--offwhite); border-radius: 0 8px 8px 0;
+    }
+    .pillar h4 { font-family: var(--serif); color: var(--teal-deep); font-size: 1.05rem; margin-bottom: 0.4rem; }
+    .pillar p { font-size: 0.87rem; color: var(--ink-muted); line-height: 1.6; }
+
+    /* ─── STEERING ─── */
+    .member-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1.4rem; margin-top: 2rem; }
+    .member-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+      padding: 1.5rem; text-align: center;
+    }
+    .member-avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--teal-deep); margin: 0 auto 1rem;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-size: 1.4rem; color: var(--white);
+    }
+    .member-card h4 { font-weight: 600; font-size: 0.97rem; color: var(--ink); margin-bottom: 0.2rem; }
+    .member-card .role { font-size: 0.8rem; color: var(--coral); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+    .member-card .affil { font-size: 0.82rem; color: var(--ink-muted); }
+
+    /* ─── NEWS ─── */
+    .news-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .news-item {
+      background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+      padding: 1.75rem; display: grid; grid-template-columns: auto 1fr; gap: 1.5rem;
+    }
+    .news-date {
+      text-align: center; background: var(--teal-light); border-radius: 8px;
+      padding: 0.8rem 1rem; min-width: 70px; height: fit-content;
+    }
+    .news-date .day { font-family: var(--serif); font-size: 1.6rem; color: var(--teal-deep); display: block; line-height: 1; }
+    .news-date .month { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); }
+    .news-tag {
+      display: inline-block; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      background: var(--coral-light); color: var(--coral);
+      padding: 2px 8px; border-radius: 4px; margin-bottom: 0.5rem;
+    }
+    .news-item h3 { font-family: var(--serif); font-size: 1.2rem; color: var(--teal-deep); margin-bottom: 0.45rem; }
+    .news-item p { font-size: 0.9rem; color: var(--ink-muted); line-height: 1.65; }
+    .news-item .news-link { display: inline-block; margin-top: 0.6rem; font-size: 0.85rem; color: var(--teal-deep); font-weight: 600; text-decoration: none; }
+    .news-item .news-link:hover { color: var(--coral); }
+
+    /* ─── EVENTS ─── */
+    .events-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .event-item {
+      background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+      padding: 1.5rem 1.75rem; display: flex; align-items: flex-start; gap: 1.5rem;
+    }
+    .event-badge {
+      background: var(--teal-deep); color: var(--white);
+      border-radius: 8px; padding: 0.6rem 0.85rem; text-align: center;
+      min-width: 62px; flex-shrink: 0;
+    }
+    .event-badge .eday { font-family: var(--serif); font-size: 1.5rem; display: block; line-height: 1; }
+    .event-badge .emon { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.8; }
+    .event-type-tag {
+      display: inline-block; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 8px;
+      border-radius: 4px; margin-bottom: 0.4rem;
+    }
+    .tag-online { background: #E8F5E9; color: #2E7D32; }
+    .tag-inperson { background: #FFF3E0; color: #E65100; }
+    .tag-seminar { background: #EDE7F6; color: #4527A0; }
+    .event-item h3 { font-family: var(--serif); font-size: 1.1rem; color: var(--teal-deep); margin-bottom: 0.3rem; }
+    .event-item p { font-size: 0.88rem; color: var(--ink-muted); line-height: 1.6; }
+    .event-meta { font-size: 0.8rem; color: var(--ink-muted); margin-top: 0.4rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    .event-meta span::before { margin-right: 4px; }
+    .btn-sm { padding: 0.45rem 1rem; font-size: 0.82rem; margin-top: 0.7rem; }
+
+    /* ─── POLICY ─── */
+    .policy-tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .policy-tab {
+      padding: 0.55rem 1.2rem; border-radius: 50px; border: 1.5px solid var(--border);
+      background: var(--white); color: var(--ink-muted); font-size: 0.85rem;
+      font-weight: 600; cursor: pointer; transition: 0.2s;
+    }
+    .policy-tab.active, .policy-tab:hover { background: var(--teal-deep); color: var(--white); border-color: var(--teal-deep); }
+    .policy-panel { display: none; }
+    .policy-panel.active { display: block; }
+    .rec-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+    .rec-list li {
+      display: flex; gap: 1rem; align-items: flex-start;
+      background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem;
+    }
+    .rec-num {
+      background: var(--coral); color: var(--white); font-family: var(--serif);
+      font-size: 1.1rem; border-radius: 50%; min-width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .rec-list li p { font-size: 0.92rem; color: var(--ink); line-height: 1.65; }
+    .rec-list li strong { display: block; font-size: 0.95rem; color: var(--teal-deep); margin-bottom: 0.25rem; }
+
+    /* ─── FORMS ─── */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .form-full { grid-column: 1 / -1; }
+    label { display: block; font-size: 0.83rem; font-weight: 600; color: var(--teal-mid); margin-bottom: 0.35rem; }
+    input[type=text], input[type=email], textarea, select {
+      width: 100%; padding: 0.7rem 1rem; border: 1.5px solid var(--border);
+      border-radius: 6px; font-family: var(--sans); font-size: 0.92rem; color: var(--ink);
+      background: var(--white); transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none; border-color: var(--teal-deep); box-shadow: 0 0 0 3px rgba(13,79,92,0.1);
+    }
+    textarea { resize: vertical; min-height: 130px; }
+    .form-note { font-size: 0.8rem; color: var(--ink-muted); margin-top: 0.4rem; }
+
+    /* ─── CONTACT LAYOUT ─── */
+    .contact-layout { display: grid; grid-template-columns: 1fr 380px; gap: 3rem; align-items: start; }
+    .contact-sidebar { background: var(--teal-deep); border-radius: 12px; padding: 2rem; color: var(--white); }
+    .contact-sidebar h3 { font-family: var(--serif); font-size: 1.3rem; color: var(--white); margin-bottom: 1.2rem; }
+    .contact-detail { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.3rem; }
+    .contact-detail .icon { font-size: 1.2rem; margin-top: 2px; }
+    .contact-detail p { font-size: 0.9rem; line-height: 1.5; color: rgba(255,255,255,0.85); }
+    .contact-detail p strong { color: var(--white); display: block; margin-bottom: 0.15rem; }
+    .divider-rule { border: none; border-top: 1px solid rgba(255,255,255,0.18); margin: 1.4rem 0; }
+
+    /* ─── GET INVOLVED ─── */
+    .involve-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .involve-box { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; }
+    .involve-box h3 { font-family: var(--serif); font-size: 1.35rem; color: var(--teal-deep); margin-bottom: 0.5rem; }
+    .involve-box p { font-size: 0.9rem; color: var(--ink-muted); margin-bottom: 1.4rem; line-height: 1.65; }
+    .checkbox-group { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.2rem; }
+    .checkbox-label { display: flex; align-items: center; gap: 0.6rem; font-size: 0.88rem; cursor: pointer; }
+    .checkbox-label input { width: auto; accent-color: var(--teal-deep); }
+    .media-card { background: var(--teal-light); border-radius: 10px; padding: 1.5rem; margin-top: 1.5rem; }
+    .media-card h4 { font-family: var(--serif); color: var(--teal-deep); font-size: 1.05rem; margin-bottom: 0.7rem; }
+    .media-card p { font-size: 0.88rem; color: var(--ink-muted); line-height: 1.6; }
+    .media-card a { color: var(--teal-deep); font-weight: 600; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink); color: rgba(255,255,255,0.65);
+      padding: 3rem 2rem 2rem; margin-top: 0;
+    }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; }
+    footer h4 { color: var(--white); font-size: 0.88rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.07em; }
+    footer p, footer a { font-size: 0.85rem; line-height: 1.7; color: rgba(255,255,255,0.65); }
+    footer a { text-decoration: none; display: block; margin-bottom: 0.3rem; }
+    footer a:hover { color: var(--coral); }
+    .footer-brand { font-family: var(--serif); font-size: 1.3rem; color: var(--white); margin-bottom: 0.7rem; }
+    .footer-bottom { max-width: 1100px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.12); font-size: 0.78rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 820px) {
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: var(--teal-deep); padding: 1rem; }
+      .nav-links.open { display: flex; }
+      .nav-toggle { display: block; }
+      .contact-layout, .involve-layout { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .news-item { grid-template-columns: 1fr; }
+      .event-item { flex-direction: column; }
+    }
+
+    @media (max-width: 520px) {
+      .stat { padding: 1.2rem 1.4rem; }
+    }
+
+    /* ─── UTILS ─── */
+    .mt1 { margin-top: 1rem; }
+    .mt2 { margin-top: 2rem; }
+    .success-msg { background: #E8F5E9; color: #2E7D32; border: 1px solid #A5D6A7; border-radius: 6px; padding: 0.9rem 1.2rem; font-size: 0.9rem; display: none; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a class="nav-brand" href="#" onclick="showPage('home')">
+    <svg class="nav-logo" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="19" cy="19" r="18" stroke="#E8714A" stroke-width="1.5" fill="none"/>
+      <circle cx="11" cy="13" r="3" fill="#E8714A"/>
+      <circle cx="27" cy="13" r="3" fill="rgba(255,255,255,0.5)"/>
+      <circle cx="19" cy="26" r="3" fill="rgba(255,255,255,0.5)"/>
+      <line x1="11" y1="13" x2="27" y2="13" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+      <line x1="11" y1="13" x2="19" y2="26" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+      <line x1="27" y1="13" x2="19" y2="26" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+    </svg>
+    <div class="nav-brand-text">
+      <strong>ReproNet</strong>
+      <span>CompBio &amp; Medical Informatics</span>
+    </div>
+  </a>
+  <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#" onclick="showPage('mission')">Mission</a></li>
+    <li><a href="#" onclick="showPage('steering')">Steering Committee</a></li>
+    <li><a href="#" onclick="showPage('news')">News</a></li>
+    <li><a href="#" onclick="showPage('policy')">Recommendations &amp; Policy</a></li>
+    <li><a href="#" onclick="showPage('events')">Upcoming Events</a></li>
+    <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+    <li><a href="#" onclick="showPage('involve')" class="nav-cta">Get Involved</a></li>
+  </ul>
+</nav>
+
+<!-- ════════════════════════════════════════ -->
+<!-- HOME PAGE                               -->
+<!-- ════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <svg class="hero-svg" viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg">
+      <!-- network node pattern -->
+      <circle cx="100" cy="80" r="5" fill="white"/><circle cx="300" cy="150" r="4" fill="white"/>
+      <circle cx="550" cy="60" r="6" fill="white"/><circle cx="800" cy="120" r="4" fill="white"/>
+      <circle cx="1050" cy="70" r="5" fill="white"/><circle cx="200" cy="300" r="4" fill="white"/>
+      <circle cx="450" cy="380" r="5" fill="white"/><circle cx="700" cy="280" r="6" fill="white"/>
+      <circle cx="950" cy="350" r="4" fill="white"/><circle cx="1150" cy="220" r="5" fill="white"/>
+      <circle cx="650" cy="450" r="4" fill="white"/><circle cx="1000" cy="460" r="5" fill="white"/>
+      <line x1="100" y1="80" x2="300" y2="150" stroke="white" stroke-width="0.8"/>
+      <line x1="300" y1="150" x2="550" y2="60" stroke="white" stroke-width="0.8"/>
+      <line x1="550" y1="60" x2="800" y2="120" stroke="white" stroke-width="0.8"/>
+      <line x1="800" y1="120" x2="1050" y2="70" stroke="white" stroke-width="0.8"/>
+      <line x1="100" y1="80" x2="200" y2="300" stroke="white" stroke-width="0.8"/>
+      <line x1="300" y1="150" x2="450" y2="380" stroke="white" stroke-width="0.8"/>
+      <line x1="550" y1="60" x2="700" y2="280" stroke="white" stroke-width="0.8"/>
+      <line x1="700" y1="280" x2="450" y2="380" stroke="white" stroke-width="0.8"/>
+      <line x1="800" y1="120" x2="950" y2="350" stroke="white" stroke-width="0.8"/>
+      <line x1="1050" y1="70" x2="1150" y2="220" stroke="white" stroke-width="0.8"/>
+      <line x1="950" y1="350" x2="650" y2="450" stroke="white" stroke-width="0.8"/>
+      <line x1="950" y1="350" x2="1000" y2="460" stroke="white" stroke-width="0.8"/>
+      <line x1="700" y1="280" x2="1150" y2="220" stroke="white" stroke-width="0.6"/>
+    </svg>
+    <div style="position:relative; z-index:1;">
+      <p class="hero-eyebrow">Reproducibility Network · Computational Biology &amp; Medical Informatics</p>
+      <h1>Science you can trust starts with science you can repeat.</h1>
+      <p>We connect researchers, institutions, funders, and publishers to embed reproducible practices across the full lifecycle of computational and clinical data science.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#" onclick="showPage('mission')">Our Mission</a>
+        <a class="btn btn-outline" href="#" onclick="showPage('involve')">Join the Network</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-strip">
+    <div class="stat"><strong>340+</strong><span>Member Researchers</span></div>
+    <div class="stat"><strong>28</strong><span>Partner Institutions</span></div>
+    <div class="stat"><strong>14</strong><span>Countries Represented</span></div>
+    <div class="stat"><strong>6</strong><span>Policy Adoptions</span></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">What we do</div>
+    <h2 class="section-title">Advancing reproducibility<br/>across three pillars</h2>
+    <p class="section-intro">ReproNet drives systemic change by connecting the scientific community around shared standards, open tools, and evidence-based policy for computational and clinical research.</p>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🔬</div>
+        <h3>Standards &amp; Practice</h3>
+        <p>We develop community-endorsed guidelines for code sharing, data provenance, and computational environment specification in biomedical research pipelines.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📋</div>
+        <h3>Policy &amp; Advocacy</h3>
+        <p>We translate reproducibility research into actionable recommendations for funders, journals, and institutions — and track their implementation over time.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤝</div>
+        <h3>Community &amp; Training</h3>
+        <p>Through journal clubs, seminars, and workshops, we build the skills and culture needed for reproducible practice to become the norm, not the exception.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-full">
+    <div class="section">
+      <div class="section-label">Latest from the network</div>
+      <h2 class="section-title">Recent highlights</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="news-tag">Publication</div>
+          <h3>Benchmarking single-cell RNA-seq pipelines for cross-lab reproducibility</h3>
+          <p>A new systematic review in <em>Nature Methods</em> evaluates 11 commonly used scRNA-seq workflows across 6 independent labs, revealing substantial variability in downstream clustering.</p>
+          <a class="news-link" href="#" onclick="showPage('news')">Read more →</a>
+        </div>
+        <div class="card">
+          <div class="news-tag">Event</div>
+          <h3>Online journal club: EHR data standardisation — July 2025</h3>
+          <p>Join our next session examining reproducibility challenges in electronic health record studies, with a focus on OMOP CDM adoption across European hospital networks.</p>
+          <a class="news-link" href="#" onclick="showPage('events')">Register →</a>
+        </div>
+        <div class="card">
+          <div class="news-tag">Policy</div>
+          <h3>New recommendations released for clinical ML model reporting</h3>
+          <p>ReproNet publishes updated guidance for institutions deploying machine learning models in clinical decision support, including validation cohort and environment transparency requirements.</p>
+          <a class="news-link" href="#" onclick="showPage('policy')">Read guidance →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- MISSION PAGE                            -->
+<!-- ════════════════════════════════════════ -->
+<div id="page-mission" class="page">
+  <div class="hero" style="padding: 3.5rem 2rem 3rem;">
+    <div style="position:relative;z-index:1;">
+      <p class="hero-eyebrow">Who we are</p>
+      <h1 style="font-size: clamp(1.9rem, 4vw, 3rem);">Our Mission</h1>
+      <p>Building the foundations for trustworthy, replicable science in computational biology and medical informatics.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Why it matters</div>
+    <h2 class="section-title">A reproducibility crisis at the intersection of biology and data</h2>
+    <p class="section-intro">
+      Computational biology and medical informatics are transforming medicine — but their power depends entirely on whether their findings can be trusted, repeated, and built upon. Across academia, clinical research, and industry, we face a reproducibility deficit that threatens scientific progress and, ultimately, patient outcomes.
+    </p>
+    <p style="font-size:1rem; color:var(--ink-muted); max-width:760px; line-height:1.8;">
+      Studies in genomics, systems biology, and clinical AI routinely suffer from undisclosed preprocessing choices, opaque model configurations, proprietary or inaccessible data, and computing environments that cannot be recreated. The ReproNet Computational Biology &amp; Medical Informatics network exists to change this — not through criticism, but through collaboration, education, and the development of practical, community-driven standards.
+    </p>
+
+    <div class="pillar-grid">
+      <div class="pillar">
+        <h4>Open &amp; Documented Code</h4>
+        <p>Advocate for and support researchers in sharing analysis code with sufficient documentation to enable independent execution and verification.</p>
+      </div>
+      <div class="pillar">
+        <h4>Transparent Data Provenance</h4>
+        <p>Promote standards for describing the origin, processing, and version history of biological and clinical datasets used in published studies.</p>
+      </div>
+      <div class="pillar">
+        <h4>Reproducible Environments</h4>
+        <p>Support the adoption of containerisation, version-pinned dependencies, and computational workflow tools that allow environments to be precisely reconstructed.</p>
+      </div>
+      <div class="pillar">
+        <h4>Independent Validation</h4>
+        <p>Facilitate replication studies, benchmarking efforts, and multi-site validation projects to assess the robustness of key findings in our fields.</p>
+      </div>
+      <div class="pillar">
+        <h4>Education &amp; Culture Change</h4>
+        <p>Embed reproducibility training into postgraduate curricula, laboratory onboarding, and continuing professional development across our disciplines.</p>
+      </div>
+      <div class="pillar">
+        <h4>Policy Translation</h4>
+        <p>Work with journals, funders, and institutions to turn reproducibility best practices into enforceable, incentivised requirements.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-full">
+    <div class="section">
+      <div class="section-label">Our Approach</div>
+      <h2 class="section-title">How we work</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">📡</div>
+          <h3>Evidence-based advocacy</h3>
+          <p>We compile and synthesise evidence on the state of reproducibility in computational biology and medical informatics, and use this to inform recommendations to stakeholders at all levels.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌐</div>
+          <h3>A distributed network</h3>
+          <p>ReproNet is not a single institution — we are a distributed community spanning universities, research institutes, hospitals, and national funding bodies across multiple countries.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚙️</div>
+          <h3>Practical tools &amp; resources</h3>
+          <p>We develop and curate practical tools — checklists, workflow templates, software recommendations — that researchers can adopt immediately in their day-to-day practice.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- STEERING COMMITTEE PAGE                 -->
+<!-- ════════════════════════════════════════ -->
+<div id="page-steering" class="page">
+  <div class="hero" style="padding: 3.5rem 2rem 3rem;">
+    <div style="position:relative;z-index:1;">
+      <p class="hero-eyebrow">Leadership</p>
+      <h1 style="font-size: clamp(1.9rem, 4vw, 3rem);">Steering Committee</h1>
+      <p>Our network is led by a cross-disciplinary steering committee of researchers, clinicians, and policy experts.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Network Leadership</div>
+    <h2 class="section-title">Steering Committee Members</h2>
+    <p class="section-intro">The steering committee provides scientific and strategic oversight of the network's activities, working groups, and policy outputs. Members serve two-year terms and are drawn from across the computational biology and medical informatics communities.</p>
+
+    <div class="member-grid">
+      <div class="member-card">
+        <div class="member-avatar" style="background:#0D4F5C;">PH</div>
+        <h4>Prof. Priya Harrington</h4>
+        <div class="role">Chair</div>
+        <div class="affil">Wellcome Sanger Institute, Cambridge</div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar" style="background:#3D5A6C;">MT</div>
+        <h4>Dr. Marco Teixeira</h4>
+        <div class="role">Deputy Chair</div>
+        <div class="affil">EMBL-EBI, Hinxton</div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar" style="background:#E8714A;">SK</div>
+        <h4>Dr. Soo-Yeon Kim</h4>
+        <div class="role">Policy Lead</div>
+        <div class="affil">Seoul National University Hospital</div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar" style="background:#0D4F5C;">AB</div>
+        <h4>Prof. Aleksei Belov</h4>
+        <div class="role">Training &amp; Education Lead</div>
+        <div class="affil">Skoltech, Moscow / EPFL, Lausanne</div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar" style="background:#3D5A6C;">JN</div>
+        <h4>Dr. Josephine Nkemdirim</h4>
+        <div class="role">Clinical Informatics Lead</div>
+        <div class="affil">University of Cape Town &amp; GSK</div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar" style="background:#E8714A;">CW</div>
+        <h4>Dr. Callum Wright</h4>
+        <div class="role">Computational Methods Lead</div>
+        <div class="affil">Garvan Institute of Medical Research</div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar" style="background:#0D4F5C;">FA</div>
+        <h4>Prof. Fatima Al-Rashidi</h4>
+        <div class="role">Funder Liaison</div>
+        <div class="affil">Wellcome Trust (Observer)</div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar" style="background:#3D5A6C;">RM</div>
+        <h4>Dr. Rafael Menezes</h4>
+        <div class="role">Publisher Liaison</div>
+        <div class="affil">eLife Sciences Publications</div>
+      </div>
+    </div>
+
+    <div style="background: var(--teal-light); border-radius: 12px; padding: 2rem; margin-top: 3rem;">
+      <div class="section-label">Working Groups</div>
+      <h3 style="font-family: var(--serif); color: var(--teal-deep); font-size: 1.4rem; margin-bottom: 1rem;">Active working groups</h3>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Genomics &amp; Single-Cell WG</h3>
+          <p>Developing community standards for scRNA-seq, ATAC-seq, and spatial transcriptomics reproducibility. Co-chairs: Dr. Kim &amp; Prof. Harrington.</p>
+        </div>
+        <div class="card">
+          <h3>Clinical AI Validation WG</h3>
+          <p>Addressing reproducibility in clinical ML models, EHR studies, and decision support systems. Co-chair: Dr. Nkemdirim.</p>
+        </div>
+        <div class="card">
+          <h3>Workflow &amp; Infrastructure WG</h3>
+          <p>Evaluating and recommending containerisation tools, workflow managers, and FAIR data practices. Co-chair: Dr. Wright.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- NEWS PAGE                               -->
+<!-- ════════════════════════════════════════ -->
+<div id="page-news" class="page">
+  <div class="hero" style="padding: 3.5rem 2rem 3rem;">
+    <div style="position:relative;z-index:1;">
+      <p class="hero-eyebrow">Publications &amp; Updates</p>
+      <h1 style="font-size: clamp(1.9rem, 4vw, 3rem);">News &amp; Publications</h1>
+      <p>Summaries of recent scientific publications, network updates, and commentary on reproducibility in our fields.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Recent Publications</div>
+    <h2 class="section-title">From the literature</h2>
+    <div class="news-list">
+
+      <div class="news-item">
+        <div class="news-date"><span class="day">12</span><span class="month">Jun 2025</span></div>
+        <div>
+          <span class="news-tag">Systematic Review</span>
+          <h3>Benchmarking single-cell RNA-seq pipelines: a multi-lab reproducibility assessment</h3>
+          <p>A landmark study published in <em>Nature Methods</em> evaluated 11 widely used scRNA-seq analysis pipelines across six independent laboratories using shared raw data. The authors found substantial variability in cell-type identification and differential expression results that was attributable primarily to preprocessing choices — including ambient RNA removal and doublet detection thresholds — rather than biological variation. The study provides a checklist of mandatory parameter disclosures for authors submitting scRNA-seq manuscripts.</p>
+          <a class="news-link" href="#">Read full summary →</a>
+        </div>
+      </div>
+
+      <div class="news-item">
+        <div class="news-date"><span class="day">04</span><span class="month">Jun 2025</span></div>
+        <div>
+          <span class="news-tag">Original Research</span>
+          <h3>Reproducibility of clinical prediction models for sepsis in ICU settings across four hospital systems</h3>
+          <p>Researchers from the OHDSI collaborative tested the external validity of five published sepsis prediction models across four US hospital systems using OMOP CDM-harmonised data. Performance degraded substantially at all external sites, with AUROC dropping from a median 0.82 (development cohort) to 0.63 (external validation). The authors argue that temporal and geographic validation should be mandatory prior to publication of clinical AI models.</p>
+          <a class="news-link" href="#">Read full summary →</a>
+        </div>
+      </div>
+
+      <div class="news-item">
+        <div class="news-date"><span class="day">22</span><span class="month">May 2025</span></div>
+        <div>
+          <span class="news-tag">Methods Paper</span>
+          <h3>SnakeMake profiles for portable, reproducible genomics workflows: a community resource</h3>
+          <p>A consortium of computational biologists has published a curated repository of Snakemake profiles designed to make genomics workflows portable across HPC environments, cloud platforms, and local machines. The paper, in <em>Bioinformatics</em>, demonstrates that standardised profiles reduce environment-related workflow failure rates by over 60% and substantially improve inter-laboratory reproducibility in variant calling benchmarks.</p>
+          <a class="news-link" href="#">Read full summary →</a>
+        </div>
+      </div>
+
+      <div class="news-item">
+        <div class="news-date"><span class="day">08</span><span class="month">May 2025</span></div>
+        <div>
+          <span class="news-tag">Commentary</span>
+          <h3>Toward FAIR clinical data for reproducible medical informatics: gaps and opportunities</h3>
+          <p>A perspectives piece in <em>The Lancet Digital Health</em> evaluates progress on FAIR (Findable, Accessible, Interoperable, Reusable) data principles in clinical informatics, arguing that while technical interoperability has improved, legal and governance frameworks remain the primary bottleneck. The authors recommend a tiered data access model that balances reproducibility with patient privacy.</p>
+          <a class="news-link" href="#">Read full summary →</a>
+        </div>
+      </div>
+
+      <div class="news-item">
+        <div class="news-date"><span class="day">17</span><span class="month">Apr 2025</span></div>
+        <div>
+          <span class="news-tag">Network Update</span>
+          <h3>ReproNet releases updated checklist for computational manuscript submission</h3>
+          <p>The network's Workflow &amp; Infrastructure Working Group has published version 2.1 of its Computational Reproducibility Checklist for manuscript authors. The updated checklist adds sections on large language model use in analysis pipelines and extends guidance on containerisation to include Apptainer/Singularity for HPC contexts. The checklist has been endorsed by three partnering journals.</p>
+          <a class="news-link" href="#">Download checklist →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- RECOMMENDATIONS & POLICY PAGE           -->
+<!-- ════════════════════════════════════════ -->
+<div id="page-policy" class="page">
+  <div class="hero" style="padding: 3.5rem 2rem 3rem;">
+    <div style="position:relative;z-index:1;">
+      <p class="hero-eyebrow">Guidance &amp; Advocacy</p>
+      <h1 style="font-size: clamp(1.9rem, 4vw, 3rem);">Recommendations &amp; Policy</h1>
+      <p>Evidence-based recommendations for the stakeholders who shape how science is funded, conducted, and published.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">By Stakeholder</div>
+    <h2 class="section-title">Select a stakeholder group</h2>
+    <p class="section-intro">Our recommendations are tailored to the specific roles, incentives, and levers available to different parts of the research ecosystem. Select a group to explore targeted guidance.</p>
+
+    <div class="policy-tabs">
+      <button class="policy-tab active" onclick="showPolicy('institutions')">Research Institutions</button>
+      <button class="policy-tab" onclick="showPolicy('funders')">Funders</button>
+      <button class="policy-tab" onclick="showPolicy('publishers')">Publishers &amp; Journals</button>
+      <button class="policy-tab" onclick="showPolicy('researchers')">Researchers</button>
+    </div>
+
+    <!-- INSTITUTIONS -->
+    <div class="policy-panel active" id="policy-institutions">
+      <p style="font-size:0.95rem; color:var(--ink-muted); max-width:700px; line-height:1.7; margin-bottom:0.5rem;">
+        Research institutions — universities, hospitals, and research institutes — are uniquely positioned to embed reproducibility into the everyday infrastructure and culture of science.
+      </p>
+      <ul class="rec-list">
+        <li><div class="rec-num">1</div><div><strong>Mandate research data management plans</strong><p>Require all research projects to submit a data management plan at the outset, specifying how raw data, processed data, and analysis code will be stored, documented, and made accessible.</p></div></li>
+        <li><div class="rec-num">2</div><div><strong>Provide shared computational infrastructure</strong><p>Invest in institutional HPC and cloud platforms with standardised software environments, reducing the burden on individual researchers to recreate computing environments independently.</p></div></li>
+        <li><div class="rec-num">3</div><div><strong>Incorporate reproducibility training into postgraduate programmes</strong><p>Include instruction in version control, workflow management, containerisation, and data provenance as core components of doctoral training across computational and clinical disciplines.</p></div></li>
+        <li><div class="rec-num">4</div><div><strong>Recognise reproducibility contributions in academic assessment</strong><p>Update promotion and hiring criteria to recognise and reward reproducibility-enabling activities: code sharing, dataset curation, replication studies, and methods development.</p></div></li>
+        <li><div class="rec-num">5</div><div><strong>Establish institutional open research offices</strong><p>Appoint dedicated open research or reproducibility support staff who can advise researchers on data sharing, preregistration, and compliance with funder and publisher requirements.</p></div></li>
+      </ul>
+    </div>
+
+    <!-- FUNDERS -->
+    <div class="policy-panel" id="policy-funders">
+      <p style="font-size:0.95rem; color:var(--ink-muted); max-width:700px; line-height:1.7; margin-bottom:0.5rem;">
+        Funding bodies control the conditions under which research is conducted, and are among the most powerful actors in shaping scientific norms and incentive structures.
+      </p>
+      <ul class="rec-list">
+        <li><div class="rec-num">1</div><div><strong>Require code and data availability as a condition of funding</strong><p>Make the availability of analysis code and underlying data a mandatory condition of all grants producing computational or data-driven outputs, with explicit timelines and minimum standards.</p></div></li>
+        <li><div class="rec-num">2</div><div><strong>Fund independent replication and benchmarking studies</strong><p>Create dedicated funding streams for replication studies, large-scale benchmarking efforts, and infrastructure to support independent verification of key findings in priority areas.</p></div></li>
+        <li><div class="rec-num">3</div><div><strong>Include reproducibility reviewers in grant assessment panels</strong><p>Add methodological experts with specific expertise in computational reproducibility to grant review panels for computational biology and medical informatics projects.</p></div></li>
+        <li><div class="rec-num">4</div><div><strong>Fund sustainable research software engineering</strong><p>Recognise research software as a first-class research output and fund the professional research software engineers needed to develop and maintain reusable, reproducible computational tools.</p></div></li>
+      </ul>
+    </div>
+
+    <!-- PUBLISHERS -->
+    <div class="policy-panel" id="policy-publishers">
+      <p style="font-size:0.95rem; color:var(--ink-muted); max-width:700px; line-height:1.7; margin-bottom:0.5rem;">
+        Journals and publishers gate the dissemination of scientific findings and set the evidentiary standards that determine what constitutes adequate documentation of a study.
+      </p>
+      <ul class="rec-list">
+        <li><div class="rec-num">1</div><div><strong>Adopt mandatory code and data availability statements</strong><p>Require structured availability statements for all computational manuscripts, distinguishing between fully available, available on request, and restricted access, with clear justifications for any restrictions.</p></div></li>
+        <li><div class="rec-num">2</div><div><strong>Implement computational reproducibility checks</strong><p>Trial and scale pre-publication reproducibility checks in which editorial staff or third-party services attempt to execute the key analyses of a manuscript using the provided code and data.</p></div></li>
+        <li><div class="rec-num">3</div><div><strong>Require structured methods reporting using community checklists</strong><p>Adopt community-developed checklists (such as ReproNet's Computational Reproducibility Checklist) as mandatory supplementary materials for relevant manuscript types.</p></div></li>
+        <li><div class="rec-num">4</div><div><strong>Publish replication and null results</strong><p>Formally commit to publishing well-conducted replication attempts and robustly designed studies with null results, reducing publication bias that distorts the reproducibility landscape.</p></div></li>
+        <li><div class="rec-num">5</div><div><strong>Require external validation for clinical prediction models</strong><p>For manuscripts reporting clinical prediction models or diagnostic AI tools, make external validation on an independent cohort a prerequisite for publication consideration.</p></div></li>
+      </ul>
+    </div>
+
+    <!-- RESEARCHERS -->
+    <div class="policy-panel" id="policy-researchers">
+      <p style="font-size:0.95rem; color:var(--ink-muted); max-width:700px; line-height:1.7; margin-bottom:0.5rem;">
+        Individual researchers are the primary agents of change. The practices adopted in individual laboratories and projects aggregate into the overall culture of a field.
+      </p>
+      <ul class="rec-list">
+        <li><div class="rec-num">1</div><div><strong>Version-control all analysis code from day one</strong><p>Use Git from the start of every project, with regular commits and meaningful commit messages. Link repositories to published papers via Zenodo or equivalent services for persistent archiving.</p></div></li>
+        <li><div class="rec-num">2</div><div><strong>Use workflow managers and container technologies</strong><p>Adopt tools such as Snakemake, Nextflow, or WDL for analysis workflows, and use Docker, Apptainer, or conda environments with pinned dependency versions.</p></div></li>
+        <li><div class="rec-num">3</div><div><strong>Preregister computational studies where possible</strong><p>For hypothesis-driven analyses, consider preregistering the analysis plan on OSF or a relevant preregistration platform to distinguish confirmatory from exploratory findings.</p></div></li>
+        <li><div class="rec-num">4</div><div><strong>Write for the reader who will re-run your analysis</strong><p>Document not just what your code does, but why each step was taken, what alternatives were considered, and what the expected outputs should look like at each stage.</p></div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- UPCOMING EVENTS PAGE                    -->
+<!-- ════════════════════════════════════════ -->
+<div id="page-events" class="page">
+  <div class="hero" style="padding: 3.5rem 2rem 3rem;">
+    <div style="position:relative;z-index:1;">
+      <p class="hero-eyebrow">Calendar</p>
+      <h1 style="font-size: clamp(1.9rem, 4vw, 3rem);">Upcoming Events</h1>
+      <p>Journal clubs, seminars, workshops, and in-person meetings. All are welcome to attend — join the mailing list to receive notifications.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">What's coming up</div>
+    <h2 class="section-title">Events calendar</h2>
+    <div class="events-list">
+
+      <div class="event-item">
+        <div class="event-badge"><span class="eday">15</span><span class="emon">Jul</span></div>
+        <div style="flex:1;">
+          <span class="event-type-tag tag-online">Online · Journal Club</span>
+          <h3>EHR data standardisation and the OMOP CDM: reproducibility in practice</h3>
+          <p>We examine two recent papers on the impact of OMOP CDM harmonisation on the reproducibility of EHR-derived cohort studies across European hospital networks. Discussion led by Dr. Josephine Nkemdirim.</p>
+          <div class="event-meta">
+            <span>🕒 16:00–17:30 UTC</span>
+            <span>📍 Zoom (link on registration)</span>
+            <span>👥 Open to all</span>
+          </div>
+          <a class="btn btn-teal btn-sm" href="#" onclick="showPage('involve')">Register free →</a>
+        </div>
+      </div>
+
+      <div class="event-item">
+        <div class="event-badge"><span class="eday">29</span><span class="emon">Jul</span></div>
+        <div style="flex:1;">
+          <span class="event-type-tag tag-seminar">Seminar</span>
+          <h3>Reproducible machine learning for clinical decision support: from benchmarking to deployment</h3>
+          <p>A research seminar featuring three short talks on (1) reproducibility challenges in clinical ML benchmarking studies, (2) model cards and datasheets for clinical AI transparency, and (3) a live demonstration of a containerised model validation pipeline.</p>
+          <div class="event-meta">
+            <span>🕒 15:00–16:30 UTC</span>
+            <span>📍 Online — Microsoft Teams</span>
+            <span>👥 Members &amp; guests</span>
+          </div>
+          <a class="btn btn-teal btn-sm" href="#" onclick="showPage('involve')">Register free →</a>
+        </div>
+      </div>
+
+      <div class="event-item">
+        <div class="event-badge"><span class="eday">19</span><span class="emon">Aug</span></div>
+        <div style="flex:1;">
+          <span class="event-type-tag tag-online">Online · Journal Club</span>
+          <h3>scRNA-seq reproducibility — benchmarking special issue follow-up</h3>
+          <p>Following the Nature Methods benchmarking study published in June, we convene a panel of three of its authors alongside community members to discuss practical implications for laboratory workflows and journal submission requirements.</p>
+          <div class="event-meta">
+            <span>🕒 17:00–18:30 UTC</span>
+            <span>📍 Zoom (link on registration)</span>
+            <span>👥 Open to all</span>
+          </div>
+          <a class="btn btn-teal btn-sm" href="#" onclick="showPage('involve')">Register free →</a>
+        </div>
+      </div>
+
+      <div class="event-item">
+        <div class="event-badge"><span class="eday">11</span><span class="emon">Sep</span></div>
+        <div style="flex:1;">
+          <span class="event-type-tag tag-inperson">In Person · Workshop</span>
+          <h3>Hands-on workflow reproducibility workshop — EMBL-EBI, Hinxton</h3>
+          <p>A full-day practical workshop covering Snakemake, Nextflow, and containerisation with Docker and Apptainer. Participants will leave with a reproducible template pipeline for their own research. Lunch and refreshments provided. Places limited to 30.</p>
+          <div class="event-meta">
+            <span>🕒 09:00–17:00 BST</span>
+            <span>📍 EMBL-EBI, Hinxton, Cambridgeshire, UK</span>
+            <span>👥 Limited places — apply to attend</span>
+          </div>
+          <a class="btn btn-primary btn-sm" href="#" onclick="showPage('involve')">Apply for a place →</a>
+        </div>
+      </div>
+
+      <div class="event-item">
+        <div class="event-badge"><span class="eday">07</span><span class="emon">Oct</span></div>
+        <div style="flex:1;">
+          <span class="event-type-tag tag-inperson">In Person · Symposium</span>
+          <h3>ReproNet Annual Symposium 2025 — Amsterdam</h3>
+          <p>Our flagship annual event brings together network members, invited speakers, and key stakeholders for a full day of research presentations, policy discussions, and working group sessions. Keynote speakers to be announced. Abstract submissions open July 2025.</p>
+          <div class="event-meta">
+            <span>🕒 All day</span>
+            <span>📍 Amsterdam RAI, Netherlands</span>
+            <span>👥 Open registration from August 2025</span>
+          </div>
+          <a class="btn btn-primary btn-sm" href="#" onclick="showPage('involve')">Join mailing list for updates →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- CONTACT PAGE                            -->
+<!-- ════════════════════════════════════════ -->
+<div id="page-contact" class="page">
+  <div class="hero" style="padding: 3.5rem 2rem 3rem;">
+    <div style="position:relative;z-index:1;">
+      <p class="hero-eyebrow">Get in touch</p>
+      <h1 style="font-size: clamp(1.9rem, 4vw, 3rem);">Contact Us</h1>
+      <p>We welcome enquiries from researchers, institutions, funders, journalists, and anyone interested in reproducible science.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="contact-layout">
+      <div>
+        <div class="section-label">Send a message</div>
+        <h2 class="section-title">Write to us</h2>
+        <p style="font-size:0.95rem; color:var(--ink-muted); margin-bottom:2rem; line-height:1.7;">We aim to respond to all enquiries within three working days. For media enquiries, please see the contact details to the right or visit the <a href="#" onclick="showPage('involve')" style="color:var(--teal-deep); font-weight:600;">Get Involved</a> page.</p>
+        <div class="form-grid" id="contactForm">
+          <div>
+            <label for="c-fname">First name</label>
+            <input type="text" id="c-fname" placeholder="Jane" />
+          </div>
+          <div>
+            <label for="c-lname">Last name</label>
+            <input type="text" id="c-lname" placeholder="Smith" />
+          </div>
+          <div>
+            <label for="c-email">Email address</label>
+            <input type="email" id="c-email" placeholder="jane.smith@university.edu" />
+          </div>
+          <div>
+            <label for="c-org">Organisation</label>
+            <input type="text" id="c-org" placeholder="Your institution or organisation" />
+          </div>
+          <div class="form-full">
+            <label for="c-subject">Subject</label>
+            <select id="c-subject">
+              <option value="">Select a topic…</option>
+              <option>General enquiry</option>
+              <option>Membership &amp; network participation</option>
+              <option>Collaboration or partnership</option>
+              <option>Media or press</option>
+              <option>Policy or recommendations</option>
+              <option>Events</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-full">
+            <label for="c-msg">Message</label>
+            <textarea id="c-msg" placeholder="Your message…"></textarea>
+          </div>
+          <div class="form-full">
+            <button class="btn btn-primary" onclick="submitForm('contactSuccess')">Send message</button>
+            <div class="success-msg" id="contactSuccess">✓ Message sent — we'll be in touch within three working days.</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="contact-sidebar">
+          <h3>Contact details</h3>
+          <div class="contact-detail">
+            <span class="icon">📧</span>
+            <p><strong>General enquiries</strong>contact@repronet-compbio.org</p>
+          </div>
+          <div class="contact-detail">
+            <span class="icon">📰</span>
+            <p><strong>Media &amp; press</strong>press@repronet-compbio.org</p>
+          </div>
+          <div class="contact-detail">
+            <span class="icon">🤝</span>
+            <p><strong>Partnerships &amp; collaborations</strong>partnerships@repronet-compbio.org</p>
+          </div>
+          <hr class="divider-rule"/>
+          <div class="contact-detail">
+            <span class="icon">📍</span>
+            <p><strong>Correspondence address</strong>ReproNet CompBio &amp; Medical Informatics<br/>c/o EMBL-EBI<br/>Wellcome Genome Campus<br/>Hinxton, CB10 1SD, UK</p>
+          </div>
+          <hr class="divider-rule"/>
+          <div class="contact-detail">
+            <span class="icon">🐦</span>
+            <p><strong>Social media</strong>@ReproNetCompBio on X/Twitter<br/>linkedin.com/company/repronet-compbio</p>
+          </div>
+        </div>
+
+        <div style="background:var(--teal-light); border-radius:12px; padding:1.5rem; margin-top:1.5rem; border:1px solid var(--border);">
+          <h4 style="font-family:var(--serif); color:var(--teal-deep); margin-bottom:0.5rem; font-size:1.05rem;">Join our mailing list</h4>
+          <p style="font-size:0.87rem; color:var(--ink-muted); margin-bottom:1rem; line-height:1.6;">Get event notifications, publication summaries, and network updates direct to your inbox.</p>
+          <a class="btn btn-primary" href="#" onclick="showPage('involve')" style="width:100%; text-align:center; display:block;">Sign up →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- GET INVOLVED PAGE                       -->
+<!-- ════════════════════════════════════════ -->
+<div id="page-involve" class="page">
+  <div class="hero" style="padding: 3.5rem 2rem 3rem;">
+    <div style="position:relative;z-index:1;">
+      <p class="hero-eyebrow">Join us</p>
+      <h1 style="font-size: clamp(1.9rem, 4vw, 3rem);">Get Involved</h1>
+      <p>Whether you're an early-career researcher, a department head, a funder, or a journalist, there's a role for you in the reproducibility movement.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Ways to participate</div>
+    <h2 class="section-title">Join the network</h2>
+
+    <div class="involve-layout">
+      <!-- MAILING LIST FORM -->
+      <div class="involve-box">
+        <h3>Join our mailing list</h3>
+        <p>Stay informed about network news, upcoming events, new publications, and policy developments. We send one digest per month and event-specific notifications. Unsubscribe at any time.</p>
+        <div>
+          <div style="margin-bottom:1rem;">
+            <label for="m-fname">First name</label>
+            <input type="text" id="m-fname" placeholder="Jane" />
+          </div>
+          <div style="margin-bottom:1rem;">
+            <label for="m-lname">Last name</label>
+            <input type="text" id="m-lname" placeholder="Smith" />
+          </div>
+          <div style="margin-bottom:1rem;">
+            <label for="m-email">Email address</label>
+            <input type="email" id="m-email" placeholder="jane.smith@university.edu" />
+          </div>
+          <div style="margin-bottom:1rem;">
+            <label for="m-role">I am a…</label>
+            <select id="m-role">
+              <option value="">Select your role…</option>
+              <option>PhD student / postdoc</option>
+              <option>Principal investigator / faculty</option>
+              <option>Research software engineer</option>
+              <option>Clinician-scientist</option>
+              <option>Research administrator</option>
+              <option>Funder / policy professional</option>
+              <option>Journal editor / publisher</option>
+              <option>Journalist / science communicator</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div style="margin-bottom:1.4rem;">
+            <label style="font-size:0.83rem; font-weight:600; color:var(--teal-mid); margin-bottom:0.6rem; display:block;">I'm interested in (select all that apply)</label>
+            <div class="checkbox-group">
+              <label class="checkbox-label"><input type="checkbox"> Monthly newsletter</label>
+              <label class="checkbox-label"><input type="checkbox"> Event notifications</label>
+              <label class="checkbox-label"><input type="checkbox"> New publication summaries</label>
+              <label class="checkbox-label"><input type="checkbox"> Policy &amp; recommendations updates</label>
+              <label class="checkbox-label"><input type="checkbox"> Working group participation</label>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="submitForm('mailingSuccess')">Subscribe</button>
+          <div class="success-msg" id="mailingSuccess">✓ You're subscribed — welcome to the network!</div>
+          <p class="form-note" style="margin-top:0.8rem;">By subscribing you agree to receive email communications from ReproNet. Your email will not be shared with third parties.</p>
+        </div>
+      </div>
+
+      <!-- OTHER WAYS + MEDIA -->
+      <div>
+        <div class="involve-box" style="margin-bottom:1.5rem;">
+          <h3>Other ways to get involved</h3>
+          <p>The network is built by its members. Here are other ways you can contribute beyond the mailing list.</p>
+          <div style="display:flex; flex-direction:column; gap:0.9rem;">
+            <div style="display:flex; gap:0.8rem; align-items:flex-start;">
+              <span style="font-size:1.2rem;">🔬</span>
+              <div><strong style="font-size:0.92rem; color:var(--teal-deep); display:block; margin-bottom:0.15rem;">Join a working group</strong><span style="font-size:0.84rem; color:var(--ink-muted);">Contribute your expertise to one of our active working groups on genomics, clinical AI, or workflow infrastructure. Email <a href="mailto:workinggroups@repronet-compbio.org" style="color:var(--teal-deep);">workinggroups@repronet-compbio.org</a></span></div>
+            </div>
+            <div style="display:flex; gap:0.8rem; align-items:flex-start;">
+              <span style="font-size:1.2rem;">📖</span>
+              <div><strong style="font-size:0.92rem; color:var(--teal-deep); display:block; margin-bottom:0.15rem;">Lead a journal club session</strong><span style="font-size:0.84rem; color:var(--ink-muted);">Propose a paper and volunteer to lead one of our monthly online journal clubs. All career stages welcome. Contact <a href="mailto:events@repronet-compbio.org" style="color:var(--teal-deep);">events@repronet-compbio.org</a></span></div>
+            </div>
+            <div style="display:flex; gap:0.8rem; align-items:flex-start;">
+              <span style="font-size:1.2rem;">🏛️</span>
+              <div><strong style="font-size:0.92rem; color:var(--teal-deep); display:block; margin-bottom:0.15rem;">Partner institutions</strong><span style="font-size:0.84rem; color:var(--ink-muted);">Institutions can become formal network partners, gaining access to resources, co-branding rights, and early access to policy outputs. Contact <a href="mailto:partnerships@repronet-compbio.org" style="color:var(--teal-deep);">partnerships@repronet-compbio.org</a></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="media-card">
+          <h4>📰 Media &amp; Press Enquiries</h4>
+          <p>We welcome media coverage of reproducibility in computational biology and medical informatics. Our steering committee members are available for comment, interview, and expert opinion.</p>
+          <p style="margin-top:0.8rem;"><strong style="color:var(--teal-deep);">Press contact:</strong><br/><a href="mailto:press@repronet-compbio.org">press@repronet-compbio.org</a><br/>+44 (0)1223 000 000 (office hours, Mon–Fri)</p>
+          <p style="margin-top:0.8rem; font-size:0.82rem; color:var(--ink-muted);">Press releases, high-resolution logos, and steering committee headshots are available on request.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">ReproNet CompBio &amp; Medical Informatics</div>
+      <p>A distributed network advancing reproducible practice across computational biology and medical informatics through community, education, and evidence-based policy.</p>
+    </div>
+    <div>
+      <h4>Pages</h4>
+      <a href="#" onclick="showPage('mission')">Mission</a>
+      <a href="#" onclick="showPage('steering')">Steering Committee</a>
+      <a href="#" onclick="showPage('news')">News</a>
+      <a href="#" onclick="showPage('policy')">Recommendations &amp; Policy</a>
+      <a href="#" onclick="showPage('events')">Upcoming Events</a>
+      <a href="#" onclick="showPage('contact')">Contact</a>
+      <a href="#" onclick="showPage('involve')">Get Involved</a>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <a href="#">@ReproNetCompBio</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">GitHub</a>
+      <a href="#">Mastodon</a>
+      <br/>
+      <h4 style="margin-top:1rem;">Contact</h4>
+      <a href="mailto:contact@repronet-compbio.org">contact@repronet-compbio.org</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 ReproNet Computational Biology &amp; Medical Informatics. All rights reserved.</span>
+    <span>Built on open science principles · <a href="#" style="color:rgba(255,255,255,0.5);">Privacy policy</a></span>
+  </div>
+</footer>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // close mobile nav
+    document.getElementById('navLinks').classList.remove('open');
+  }
+
+  function toggleNav() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+
+  function showPolicy(id) {
+    document.querySelectorAll('.policy-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.policy-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('policy-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function submitForm(successId) {
+    const el = document.getElementById(successId);
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 6000);
+  }
+</script>
+</body>
+</html>

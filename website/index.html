@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RN4CB</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.svg">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    :root {
+        --primary: #0f172a;
+        --secondary: #0891b2;
+        --accent: #10b981;
+        --light: #f8fafc;
+    }
+
+    body {
+        font-family: Inter, Arial, sans-serif;
+        scroll-behavior: smooth;
+        font-size: 1.3em;
+    }
+
+    .navbar {
+        background-color: var(--primary);
+    }
+
+    .navbar-brand,
+    .nav-link {
+        color: white !important;
+    }
+
+    .hero {
+        background: linear-gradient(135deg, #0f172a, #164e63);
+        color: white;
+        padding: 120px 0;
+    }
+
+    .section {
+        padding: 80px 0;
+    }
+
+    .section-alt {
+        background-color: var(--light);
+    }
+
+    .section-title {
+        margin-bottom: 2rem;
+        font-weight: 700;
+    }
+
+    .card {
+        border: none;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    .btn-network {
+        background-color: var(--accent);
+        border: none;
+    }
+
+    .btn-network:hover {
+        background-color: #059669;
+    }
+
+    footer {
+        background: var(--primary);
+        color: white;
+        padding: 30px 0;
+    }
+
+    .committee-photo {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+        background: #e5e7eb;
+    }
+
+    img {
+        width: 50%;
+        border-radius: 15px 50px;
+        background: #0f172a
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    hr {
+        width:70%;
+        margin:0 auto;
+    }
+</style>
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">
+            Reproducibility Network for Computational Biology
+        </a>
+
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navmenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navmenu">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a href="#mission" class="nav-link">Mission</a></li>
+            <li class="nav-item"><a href="#committee" class="nav-link">Steering Committee</a></li>
+            <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+    </div>
+</div>
+
+</nav>
+
+<!-- Hero -->
+
+<section class="hero text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold">
+            Reproducibility Network for Computational Biology
+        </h1>
+
+    <p class="lead mt-4">
+        <i>Advancing reliable and reproducible computational biology research</i>
+    </p>
+
+</div>
+
+</section>
+
+<!-- Mission -->
+
+<section id="mission" class="section">
+    <div class="container">
+        <h2 class="section-title">Core Mission</h2>
+
+    <p>
+        The Reproducibility Network for Computational Biology (RN4CB) is a peer-led,
+        globally inclusive consortium serving as a forum and voice to advocate,
+        educate, and set standards for open and reproducible research practices.
+    </p>
+
+    <p>
+        Our aim is to raise the quality and trustworthiness of research in
+        computational biology, medical informatics, and related data science fields.
+    </p>
+
+    <br>
+    <hr>
+    <br>
+        <h4 class="section-title">What we do</h2>
+    <p>
+        The network will be involved in the following activities to further the mission:
+    </p>
+
+    <ul>
+        <li>
+            Host educational events and produce materials including workshops and tutorials.
+        </li>
+
+        <li>
+            Develop best practice guidelines, recommendations and policy.
+        </li>
+
+        <li>
+            Maintain a media and online presence incl newsletter, social media and website
+        </li>
+
+        <li>
+            Give awards for excellence.
+        </li>
+
+        <li>
+            Provide career development opportunities.
+        </li>
+
+        <li>
+            Provide funding initiatives (seed grants).
+        </li>
+
+        <li>
+            Co-operate with other organisations
+        </li>
+    </ul>
+</div>
+
+</section>
+
+<!-- Steering Committee -->
+
+<section id="committee" class="section section-alt">
+    <div class="container">
+        <h2 class="section-title">Steering Committee</h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <img src="images/MarkZiemann.png" alt="Mark Ziemann" title="Mark Ziemann">
+                <h5>A/Prof Mark Ziemann</h5>
+                <p class="text-muted">Acting Chair</p>
+                <p>Burnet Institute, Australia</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <img src="images/AaronPeikert.jpeg" alt="Aaron Peikert" title="Aaron Peikert">
+                <h5>Dr Aaron Peikert</h5>
+                <p class="text-muted">Outreach & Education</p>
+                <p>Max Planck Institute for Human Development, Germany</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <img src="images/Arjun-Krishnan.png" alt="Arjun-Krishnan.png" title="Arjun-Krishnan.png">
+                <h5>A/Prof Arjun Krishnan</h5>
+                <p class="text-muted">Education</p>
+                <p>University of Colorado Anschutz Medical Campus, USA</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <img src="images/BarbaraZdradzil.jpg" alt="Barbara Zdrazil" title="Barbara Zdrazil">
+                <h5>Dr Barbara Zdrazil</h5>
+                <p class="text-muted">Career Development</p>
+                <p>EMBL-EBI, UK</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <img src="images/SarahCohen-Boulakia2.png" alt="Sarah Cohen-Boulakia" title="Sarah Cohen-Boulakia">
+                <h5>Prof Sarah Cohen-Boulakia</h5>
+                <p class="text-muted">Policy</p>
+                <p>Université Paris-Saclay, France</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <img src="images/JB-Poline.jpg" alt="Jean-Baptiste Poline" title="Jean-Baptiste Poline">
+                <h5>Prof Jean-Baptiste Poline</h5>
+                <p class="text-muted">Policy</p>
+                <p>McGill University, Canada</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <img src="images/serghei_mangul.jpg" alt="Serghei Mangul" title="Serghei Mangul">
+                <h5>Prof Serghei Mangul</h5>
+                <p class="text-muted">Career Development</p>
+                <p>University of Southern California, USA</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <img src="images/SheebaSamuel2.png" alt="Sheeba Samuel" title="Sheeba Samuel">
+                <h5>Dr Sheeba Samuel</h5>
+                <p class="text-muted">Outreach - Events</p>
+                <p>Chemnitz University of Technology, Germany</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <img src="images/StephenPiccolo2.jpg" alt="Stephen R Piccolo" title="Stephen R Piccolo">
+                <h5>A/Prof Stephen R Piccolo</h5>
+                <p class="text-muted">Education</p>
+                <p>Brigham Young University, USA</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <img src="images/TazroOhta.jpeg" alt="Tazro Ohta" title="Tazro Ohta">
+                <h5>A/Prof Tazro Ohta</h5>
+                <p class="text-muted">Policy & Cooperation</p>
+                <p>Chiba University, Japan</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <img src="images/AnusuiyaBora2.jpg" alt="Anusuiya Bora" title="Anusuiya Bora">
+                <h5>Ms Anusuiya Bora</h5>
+                <p class="text-muted">Outreach - Events</p>
+                <p>Deakin University, Australia</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <img src="images/MeganSoria.png" alt="Megan Soria" title="Megan Soria">
+                <h5>Dr Megan Soria</h5>
+                <p class="text-muted">Outreach - Social Media</p>
+                <p>Deakin University, Australia</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</section>
+
+<!-- News -->
+
+<section id="news" class="section">
+    <div class="container">
+        <h2 class="section-title">News</h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h5>RN4CB is officially established!</h5>
+                <small class="text-muted">7th August 2026</small>
+                <p class="mt-3">
+                    Please be patient while we build out more features and content on the website.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</section>
+
+<!-- Contact -->
+
+<section id="contact" class="section">
+    <div class="container">
+        <h2 class="section-title">Contact</h2>
+
+    <div class="row">
+
+        <div class="col-lg-5">
+            <h5>General Enquiries</h5>
+            <p>mark.ziemann{at}burnet{dot}edu{dot}au</p>
+
+            <h5>Social Media</h5>
+            <p>Coming soon!</p>
+        </div>
+
+    </div>
+</div>
+
+</section>
+
+<!-- Footer -->
+
+<footer>
+    <div class="container text-center">
+        <p class="mb-0">
+            © 2026 Reproducibility Network for Computational Biology
+        </p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
