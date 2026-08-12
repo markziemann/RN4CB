@@ -54,7 +54,11 @@
     .card {
         border: none;
         box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    }
+        cursor: pointer;
+  }
+
+
+  }
 
     .btn-network {
         background-color: var(--accent);
@@ -91,6 +95,45 @@
         width:70%;
         margin:0 auto;
     }
+
+
+.panel-container {
+  display: flex;
+  gap: 20px;
+}
+
+.panel {
+  background-color: #f0f0f0;
+  padding: 30px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.popup-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-modal.active {
+  display: flex;
+}
+
+.popup-content {
+  background: white;
+  padding: 25px;
+  border-radius: 6px;
+  width: 80%;
+}
+
+
 </style>
 
 </head>
@@ -165,7 +208,11 @@
 
     <ul>
         <li>
-            Host educational events and produce materials including workshops and tutorials.
+            Support education through workshops and tutorials.
+        </li>
+
+        <li>
+            Host seminars and other knowledge sharing events.
         </li>
 
         <li>
@@ -173,7 +220,7 @@
         </li>
 
         <li>
-            Maintain a media and online presence incl newsletter, social media and website
+            Maintain a media and online presence incl newsletter, social media and website.
         </li>
 
         <li>
@@ -189,7 +236,7 @@
         </li>
 
         <li>
-            Co-operate with other organisations
+            Co-operate with other organisations.
         </li>
     </ul>
 </div>
@@ -205,7 +252,7 @@
     <div class="row g-4">
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card p-4 text-center" data-popup="mark">
                 <img src="images/MarkZiemann.png" alt="Mark Ziemann" title="Mark Ziemann">
                 <h5>A/Prof Mark Ziemann</h5>
                 <p class="text-muted">Acting Chair</p>
@@ -214,7 +261,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card p-4 text-center" data-popup="aaron">
                 <img src="images/AaronPeikert.jpeg" alt="Aaron Peikert" title="Aaron Peikert">
                 <h5>Dr Aaron Peikert</h5>
                 <p class="text-muted">Outreach & Education</p>
@@ -223,7 +270,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card p-4 text-center" data-popup="arjun">
                 <img src="images/Arjun-Krishnan.png" alt="Arjun-Krishnan.png" title="Arjun-Krishnan.png">
                 <h5>A/Prof Arjun Krishnan</h5>
                 <p class="text-muted">Education</p>
@@ -232,7 +279,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card p-4 text-center" data-popup="barbara">
                 <img src="images/BarbaraZdradzil.jpg" alt="Barbara Zdrazil" title="Barbara Zdrazil">
                 <h5>Dr Barbara Zdrazil</h5>
                 <p class="text-muted">Career Development</p>
@@ -241,7 +288,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card p-4 text-center" data-popup="sarah">
                 <img src="images/SarahCohen-Boulakia2.png" alt="Sarah Cohen-Boulakia" title="Sarah Cohen-Boulakia">
                 <h5>Prof Sarah Cohen-Boulakia</h5>
                 <p class="text-muted">Policy</p>
@@ -250,7 +297,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card p-4 text-center" data-popup="jb">
                 <img src="images/JB-Poline.jpg" alt="Jean-Baptiste Poline" title="Jean-Baptiste Poline">
                 <h5>Prof Jean-Baptiste Poline</h5>
                 <p class="text-muted">Policy</p>
@@ -259,7 +306,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card p-4 text-center" data-popup="serghei">
                 <img src="images/serghei_mangul.jpg" alt="Serghei Mangul" title="Serghei Mangul">
                 <h5>Prof Serghei Mangul</h5>
                 <p class="text-muted">Career Development</p>
@@ -268,7 +315,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card p-4 text-center" data-popup="sheeba">
                 <img src="images/SheebaSamuel2.png" alt="Sheeba Samuel" title="Sheeba Samuel">
                 <h5>Dr Sheeba Samuel</h5>
                 <p class="text-muted">Outreach - Events</p>
@@ -277,7 +324,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card p-4 text-center" data-popup="stephen">
                 <img src="images/StephenPiccolo2.jpg" alt="Stephen R Piccolo" title="Stephen R Piccolo">
                 <h5>A/Prof Stephen R Piccolo</h5>
                 <p class="text-muted">Education</p>
@@ -286,7 +333,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card p-4 text-center" data-popup="tazro">
                 <img src="images/TazroOhta.jpeg" alt="Tazro Ohta" title="Tazro Ohta">
                 <h5>A/Prof Tazro Ohta</h5>
                 <p class="text-muted">Policy & Cooperation</p>
@@ -295,7 +342,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card p-4 text-center" data-popup="anu">
                 <img src="images/AnusuiyaBora2.jpg" alt="Anusuiya Bora" title="Anusuiya Bora">
                 <h5>Ms Anusuiya Bora</h5>
                 <p class="text-muted">Outreach - Events</p>
@@ -304,7 +351,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card p-4 text-center" data-popup="megan">
                 <img src="images/MeganSoria.png" alt="Megan Soria" title="Megan Soria">
                 <h5>Dr Megan Soria</h5>
                 <p class="text-muted">Outreach - Social Media</p>
@@ -316,6 +363,293 @@
 </div>
 
 </section>
+
+<!-- Popup Modal Background Overlay -->
+<div id="mark" class="popup-modal">
+  <div class="popup-content">
+    <h3>Mark Ziemann</h3>
+    <p>
+    A/Prof Mark Ziemann is a computational biology researcher specializing in genomics, transcriptomics,
+    and reproducible high-throughput data analysis.
+    His research focuses on improving the rigor, reliability, and interpretability of RNA-seq and
+    multi-omics analyses through methodological evaluation, statistical benchmarking, and transparent
+    workflow development.
+    He is the lead developer of two R/Bioconductor packages and the lead maintainer of the DEE2 database
+    of processed transcriptome data.
+    Mark is an internationally recognised expert on statistically rigourous pathway enrichment analysis.
+    In 2024 he was awarded with the MAQC Society Outstanding Reproducibility in Science Award for his
+    work entitled <i>"The five pillars of computational reproducibility: bioinformatics and beyond"</i>.
+    He is currently employed at Burnet Institute, Australia, where his working group is building
+    capacity and capability to support the analytical needs of the institute. 
+    </p>
+    <p>
+    Mark co-founded RN4CB because he's passionate about research rigour and seeing advances in
+    biomedicine translated into the clinic.
+    </p>
+    <p>
+    Featured article: Wijesooriya K, Jadaan SA, Perera KL, Kaur T, Ziemann M. Urgent need for
+    consistent standards in functional enrichment analysis. <i>PLoS Comput Biol<i>. 2022 Mar
+    9;18(3):e1009935. <a href="https://doi.org/10.1371/journal.pcbi.1009935">
+    doi: 10.1371/journal.pcbi.1009935</a>. 
+    </p>
+    <button class="close-btn">Close</button>
+  </div>
+</div>
+
+<div id="aaron" class="popup-modal">
+  <div class="popup-content">
+    <h3>Aaron Peikert</h3>
+    <p>BioSketch for Aaron Peikert.</p>
+    <button class="close-btn">Close</button>
+  </div>
+</div>
+
+<div id="arjun" class="popup-modal">
+  <div class="popup-content">
+    <h3>Arjun Krishnan</h3>
+    <p>
+    Arjun Krishnan is a computational biologist and biomedical informaticist whose research sits at the
+    intersection of machine learning/AI and large-scale public data reuse.
+    He leads a research group (www.thekrishnanlab.org) at the University of Colorado Anschutz Medical
+    Campus focused on uncovering the molecular, functional, and cellular basis of complex traits and
+    diseases.
+    His lab strives to improve every stage of data-driven discovery: i) data harmonization and
+    annotation, ii) data integration and representation, iii) mechanism prediction and interpretation,
+    iv) building benchmarking frameworks and datasets, and v) developing open code, software, and
+    webservers.
+    </p>
+    <p>
+    Reproducibility and open science are foundational to how Arjun's lab operates.
+    For every completed project, the group releases reproducible code, reusable open-source software,
+    raw and processed datasets in public repositories, and (where applicable) interactive web servers
+    that allow other researchers to apply new methods directly.
+    This commitment was recognized in 2023 with the NIH DataWorks! Prize: Significant Achievement Award
+    for Data Reuse, awarded for contributions that advance the broader biomedical community's ability to
+    leverage public data.
+    Arjun was also part of one of the 3 winning teams of the 2026 NIH S-Index Challenge.
+    </p>
+    <p>
+    Beyond research, Arjun is deeply invested in training the next generation of computational scientists.
+    He co-directs two PhD programs at CU Anschutz: the Computational Biosciences Program and the Human
+    Medical Genetics and Genomics Program.
+    He is also the PI on an NIH NLM training grant supporting the Colorado Biomedical Informatics Training
+    Program.
+    He has published frameworks on the responsible integration of generative AI into PhD training, centered
+    on the principle that trainees must build domain expertise before relying on AI tools to augment it.
+    </p>
+    <p>
+    Arjun joined this reproducibility network's steering committee because he sees the gap between how
+    rigorous science should be done and how it often gets reported and shared as one of the field's most
+    tractable and urgent problems.
+    He is part of the Educational Materials working group and is particularly interested in developing
+    practical, field-tested resources that help computational researchers, especially those early in their
+    careers, build reproducible workflows from the ground up.
+    </p>
+    <button class="close-btn">Close</button>
+  </div>
+</div>
+
+<div id="barbara" class="popup-modal">
+  <div class="popup-content">
+    <h3>Barbara Zdrazil</h3>
+    <p>BioSketch for Barbara Zdrazil.</p>
+    <button class="close-btn">Close</button>
+  </div>
+</div>
+
+<div id="sarah" class="popup-modal">
+  <div class="popup-content">
+    <h3>Sarah Cohen-Boulakia</h3>
+    <p>
+    Sarah Cohen-Boulakia is a Full Professor at Université Paris-Saclay and a Senior Member of the
+    Institut Universitaire de France (IUF), a highly selective institution that recognizes university
+    faculty for excellence in research.
+    For more than twenty years, she has been involved in interdisciplinary collaborations bringing
+    together computer scientists, biologists, and physicians from a wide range of scientific domains.
+    </p>
+    <p>
+    Her research focuses on provenance in scientific workflow management systems, reproducibility of
+    scientific experiments, and the integration, querying, and ranking of biological and biomedical
+    data.
+    More broadly, her work aims to develop methods and infrastructures that support transparent,
+    reproducible, and trustworthy data-driven science.
+    </p>
+    <p>
+    Alongside her research, she contributes to the development of the scientific community around
+    reproducibility.
+    She has coordinated several large national working groups on the reproducibility of scientific
+    experiments and is involved in the coordination of large-scale national initiatives on AI
+    education and training, as well as on reproducibility.
+    These initiatives bring together universities, research organizations, and other kinds of
+    stakeholders to foster good scientific and data practices.
+    </p>
+    <p>
+    In 2024, she was awarded the CNRS Silver Medal, one of the French National Centre for Scientific
+    Research's highest scientific distinctions, recognizing established researchers for the
+    originality, quality, and impact of their research.
+    </p>
+    <button class="close-btn">Close</button>
+  </div>
+</div>
+
+<div id="jb" class="popup-modal">
+  <div class="popup-content">
+    <h3>Jean-Baptiste Poline</h3>
+    <p>
+    Jean-Baptiste (JB) Poline, PhD, is a tenured Professor in the Department of Neurology and Neurosurgery,
+    and at the School of Computer Science at McGill; the director of the
+    <a href="https://neurodatascience.github.io/">ORIGAMI</a> neuro-data-science laboratory where the
+    <a href="https://neurobagel.org">Neurobagel</a> and
+    <a href="https://nipoppy.readthedocs.io/en/latest/">Nipoppy</a> projects are developed.
+    He is a strong proponent of open and reproducible science, founded or co-founded two scientific
+    journals, works with several groups on training (ReproNim, Neurohackademy, etc) or standardization
+    (GA4GH, INCF) initiatives, chaired the International Neuroinformatics Coordinating Facility scientific
+    council, Chaired the NeuroHub and Technical Steering Committee for the Canadian Open Neuroscience
+    Platform at the Neuro.
+    Among the early pioneers of functional magnetic resonance imaging (fMRI), today, Prof. Jean-Baptiste
+    Poline is a leading researcher in the fields of neuroimaging, imaging genetics, data science and
+    neuroinformatics technologies and works with several initiative worldwide to develop open, reproducible,
+    and efficient neuroimaging research.  
+    </p>
+    <button class="close-btn">Close</button>
+  </div>
+</div>
+
+<div id="serghei" class="popup-modal">
+  <div class="popup-content">
+    <h3>Serghei Mangul</h3>
+    <p>BioSketch for Serghei Mangul.</p>
+    <button class="close-btn">Close</button>
+  </div>
+</div>
+
+<div id="sheeba" class="popup-modal">
+  <div class="popup-content">
+    <h3>Sheeba Samuel</h3>
+    <p>
+    Dr. Sheeba Samuel is a Senior Researcher and Lecturer at TU Chemnitz, Germany, whose work sits at
+    the intersection of knowledge graphs, artificial intelligence, and data science.
+    Her research is driven by a central question: how can computational research—particularly in
+    biomedicine and the life sciences—be made more reproducible, transparent, explainable, and reusable?
+    She earned her Ph.D. from Friedrich Schiller University Jena in 2019 with a dissertation on
+    provenance-based semantic approaches to scientific reproducibility, laying the foundation for her
+    ongoing work in this area.
+    </p>
+    <p>
+    Over the past decade, she has developed semantic frameworks, ontologies, and tools that support
+    reliable computational science.
+    Her research spans the full lifecycle of computational experiments—from provenance capture and
+    semantic representation to automated reproducibility assessment of research software and Jupyter
+    notebooks.
+    She has led large-scale empirical studies, including an analysis of more than 27,000 biomedical
+    Jupyter notebooks, offering a detailed empirical picture of how well computational results in
+    published life-science research actually replicate.
+    More recently, her work has focused on scalable assessment methods, automated containerization,
+    and the use of large language models to support scientific knowledge representation and
+    reproducibility workflows.
+    <p>
+    </p>
+    Beyond her research, Sheeba actively contributes to the open science community through teaching,
+    mentoring, conference organization, and collaborative infrastructure initiatives.
+    As Co-Principal Investigator of the Jupyter4NFDI Integration Phase, she is helping develop
+    sustainable services for reproducible computational research in Germany.
+    Through this network, she looks forward to working with an international community to advance
+    practical, interoperable, and community-driven approaches that strengthen the reproducibility
+    and reusability of computational life-science research.
+    </p>
+    <button class="close-btn">Close</button>
+  </div>
+</div>
+
+<div id="stephen" class="popup-modal">
+  <div class="popup-content">
+    <h3>Stephen R Piccolo</h3>
+    <p>
+    Stephen R. Piccolo is a Professor in the Department of Biology at Brigham Young University (BYU)
+    where he has been employed since 2014.
+    He earned a B.S. degree in Management Information Systems from BYU in 2001 and then worked as a
+    software engineer at Intel Corporation for five years.
+    In 2011, he received a PhD in Biomedical Informatics from the University of Utah.
+    From 2011-2014, he was postdoctoral researcher jointly at the University of Utah (Department of
+    Pharmacology and Toxicology) and Boston University School of Medicine.
+    His research lab uses and develops computational tools to understand medical conditions, such as
+    cancer and Down syndrome, at the molecular level.
+    The lab develops methodologies for making publicly available data more findable, accessible,
+    interoperable, and reusable (FAIR) and ensuring that data curation processes are reproducible.
+    Additionally, the lab does research related to bioinformatics education, particularly at its
+    interface with artificial intelligence.
+    The lab strives to ensure that all findings published by the lab are computationally reproducible.
+    In 2016, Piccolo published a paper entitled, “Tools and techniques for computational reproducibility”
+    (Gigascience), which provides an overview of ways that researchers can improve the reproducibility
+    of their computational analyses.
+    Since January 2025, Piccolo has served as Editor-in-Chief of the Journal of Open Research Software.
+    </p>
+    <button class="close-btn">Close</button>
+  </div>
+</div>
+
+<div id="tazro" class="popup-modal">
+  <div class="popup-content">
+    <h3>Tazro Ohta</h3>
+    <p>BioSketch for Tazro Ohta.</p>
+    <button class="close-btn">Close</button>
+  </div>
+</div>
+
+<div id="anu" class="popup-modal">
+  <div class="popup-content">
+    <h3>Anusuiya Bora</h3>
+    <p>
+    Anusuiya Bora is a PhD candidate at Deakin University and the Burnet Institute, Australia.
+    She holds a Bachelor of Technology in Biotechnology from the Vellore Institute of Technology, India.
+    During her final-year undergraduate project in 2022, she collaborated with Dr. Mark Ziemann on a
+    pilot study auditing the reproducibility of published functional enrichment analyses. 
+    It revealed that only 20% of the audited papers met acceptable reproducibility standards,
+    sparking her long-term research interest in the field.
+    </p>
+    <p>
+    Following her undergraduate studies, Anusuiya completed a Master of Science in Precision Medicine
+    at University College Dublin, Ireland, supported by a 100% Global Excellence Scholarship.
+    She graduated in August 2023 and rejoined the Ziemann group in October 2023 to commence her doctoral
+    research.
+    Her PhD project, <i>"On the reproducibility of functional enrichment analysis"</i>, focuses on identifying
+    critical methodological flaws and engineering practical solutions to improve data reliability in
+    biomedical research.
+    Her recent reproducibility audits revealed severe deficiencies in the literature.
+    She is passionate about actively addressing these these gaps through developing best practices,
+    advocacy and education.
+    </p>
+    <p>
+    Anusuiya is eager to collaborate with international networks to integrate these validation steps
+    into mainstream bioinformatics pipelines.
+    Connect with Anusuiya on LinkedIn or via email to share strategies on scaling reproducible practices
+    across research institutions.
+    </p>
+    <button class="close-btn">Close</button>
+  </div>
+</div>
+
+<div id="megan" class="popup-modal">
+  <div class="popup-content">
+    <h3>Megan Soria</h3>
+    <p>
+    I am a bioinformatician researching the genetic basis of sex differences across species.
+    My doctoral research uses transcriptomic analysis to explore the molecular mechanisms of natural sex
+    change in fish, alongside collaborative research into the genetics of aging and sex-based differences
+    in humans.
+    I work as a bioinformatician at the Muscle Growth, Regeneration and Ageing Laboratory at the
+    University of Melbourne, and with the Faculty of Health at Deakin University, applying computational
+    approaches to multi-omics data including RNA-seq, proteomics, and metabolomics.
+    I also serve as a Graduate Research Teaching Fellow at Deakin University, guiding master's students
+    through the intricacies of bioinformatics and emphasizing practical research skills with undergraduates.
+    I place a strong emphasis on reproducible, well-documented analytical workflows, and I'm committed to
+    translating complex, high-dimensional data into meaningful biological insight.
+    I'm passionate about open, collaborative science and enjoy contributing to a supportive research
+    community.
+    </p>
+    <button class="close-btn">Close</button>
+  </div>
+</div>
 
 <!-- News -->
 
@@ -372,6 +706,33 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const panels = document.querySelectorAll('.card');
+const modals = document.querySelectorAll('.popup-modal');
+const closeBtns = document.querySelectorAll('.close-btn');
+
+panels.forEach(panel => {
+  panel.addEventListener('click', () => {
+    const popupId = panel.getAttribute('data-popup');
+    document.getElementById(popupId).classList.add('active');
+  });
+});
+
+closeBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.popup-modal').classList.remove('active');
+  });
+});
+
+modals.forEach(modal => {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+    }
+  });
+});
+</script>
 
 </body>
 </html>
