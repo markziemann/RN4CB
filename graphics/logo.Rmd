@@ -1,0 +1,477 @@
+---
+title: "Logo"
+author: "Mark Ziemann"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    fig_width: 7
+    fig_height: 7
+theme: simplex
+---
+
+Source: https://github.com/markziemann/RN4CB
+
+
+## Intro
+
+In this script, I'm attempting to do some logo design with R because I don't want
+to use AI for this task.
+
+```{r,libs}
+
+#install.packages("system_fonts")
+library(systemfonts)
+library(scales)
+library(viridis)
+
+```
+
+## Make a blank chart with some text
+
+List the available typefaces.
+
+```{r,data}
+
+x <- c(0,0,10,10)
+y <- c(0,10,0,10)
+plot(x,y,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white")
+text(5,5,"RN4CB",cex=10)
+
+myfonts <- system_fonts()
+head(myfonts)
+tail(myfonts)
+
+unique(myfonts$family)
+
+```
+
+The number of families is less than the number of fonts due to typefaces having different width and italic styles.
+
+## Font styles
+
+Now we can look at the different font styles like italics and bold.
+
+```{r,fonts}
+
+par(mfrow=c(2,2))
+plot(x,y,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white")
+text(5,5,"RN4CB",family=myfonts[1,"family"],font=1, cex=2)
+
+plot(x,y,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white")
+text(5,5,"RN4CB",family=myfonts[1,"family"],font=2, cex=2)
+
+plot(x,y,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white")
+text(5,5,"RN4CB",family=myfonts[1,"family"],font=3, cex=2)
+
+plot(x,y,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white")
+text(5,5,"RN4CB",family=myfonts[1,"family"],font=4, cex=2)
+
+par(mfrow=c(1,1))
+
+```
+
+Now we can show all the typefaces with all the font styles.
+
+```{r,demonstrate_fonts}
+
+families <- unique(myfonts$family)
+families <- families[order(families)]
+
+par(mar=c(0,1,1.5,0))
+
+par(mfrow=c(6,4))
+null <- lapply(1:length(families),function(i) {
+  plot(x,y,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white")
+  text(5,5,"RN4CB", family=families[i], font=1, cex=3)
+  mtext(families[i],cex=1)
+
+  plot(x,y,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white")
+  text(5,5,"RN4CB", family=families[i],font=2, cex=3)
+
+  plot(x,y,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white")
+  text(5,5,"RN4CB", family=families[i],font=3, cex=3)
+
+  plot(x,y,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white")
+  text(5,5,"RN4CB", family=families[i],font=4, cex=3)
+
+})
+
+par(mfrow=c(1,1))
+
+```
+
+
+## Candidate network logo
+
+"TeX Gyre Adventor"
+
+```{r,network1,fig.height=4,fig.width=7}
+
+skycols <- colors()[grep("sky",colors())]
+
+set.seed(42) ; myseeds <- sample(0:10000)
+
+SIZE=40
+set.seed(myseeds[1]) ; x <- sample(0:10000,size=SIZE,replace=FALSE)/1000
+set.seed(myseeds[2]) ; y <- sample(0:10000,size=SIZE,replace=FALSE)/1000
+set.seed(myseeds[5]) ; mycols <- sample(skycols,size=length(x),replace=TRUE)
+
+plot(x,y,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white",xlim=c(0,10),ylim=c(0,10))
+
+df <- data.frame(x,y)
+set.seed(myseeds[6]) ; df2 <- df[sample(1:SIZE,size=SIZE,replace=T),]
+lines(df2,col="gray",lwd=1.5)
+lines(df,col="lightgray",lwd=1.5)
+points(x,y, cex=1.6, pch=19, col=mycols)
+
+text(5.1,5,"RN4CB", family="TeX Gyre Adventor",font=1, cex=10)
+
+```
+
+## Candidate grid
+
+```{r,network2,fig.height=4,fig.width=7}
+
+skycols <- colors()[grep("sky",colors())]
+
+set.seed(42) ; myseeds <- sample(0:10000)
+
+set.seed(myseeds[1]) ; x <- sample(0:10,size=SIZE*100,replace=TRUE)
+set.seed(myseeds[2]) ; y <- sample(0:10,size=SIZE*100,replace=TRUE)
+set.seed(myseeds[5]) ; mycols <- sample(skycols,size=length(x),replace=TRUE)
+
+df <- data.frame(x,y)
+df <- unique(df)[1:SIZE,]
+
+plot(df,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white",xlim=c(0,10),ylim=c(0,10))
+
+set.seed(myseeds[6]) ; df2 <- df[sample(1:SIZE,size=SIZE,replace=T),]
+lines(df2,col="gray",lwd=1.5)
+lines(df,col="lightgray",lwd=1.5)
+points(df, cex=1.6, pch=19, col=mycols)
+
+text(5.1,5,"RN4CB", family="TeX Gyre Adventor",font=1, cex=10)
+
+```
+
+## Network chaos
+
+This one looks OK.
+
+```{r,network3,fig.height=6,fig.width=7}
+
+skycols <- colors()[grep("sky",colors())]
+
+null <- lapply(1:10,function(i) {
+
+set.seed(i) ; myseeds <- sample(0:10000)
+SIZE=25
+set.seed(myseeds[1]) ; x <- sample(0:10000,size=SIZE,replace=FALSE)/1000
+set.seed(myseeds[2]) ; y <- sample(0:10000,size=SIZE,replace=FALSE)/1000
+set.seed(myseeds[5]) ; mycols <- sample(skycols,size=length(x),replace=TRUE)
+
+plot(x,y,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white",xlim=c(0,10),ylim=c(0,10))
+
+df <- data.frame(x,y)
+set.seed(myseeds[6]) ; df2 <- df[sample(1:SIZE,size=SIZE,replace=T),]
+lines(df2,col="darkgray",lwd=5)
+lines(df,col="lightgray",lwd=5)
+
+set.seed(myseeds[7]) ; mycex <- rnorm(n=50,mean=3.5,sd=1)
+
+points(x,y, cex=mycex, pch=19, col=mycols)
+
+rect(0, 3, 10, 7,col="white",border="black",lwd=3)
+
+text(5,5,"RN4CB", family="TeX Gyre Adventor",font=1, cex=9)
+mtext(i)
+})
+
+```
+
+## Network grid
+
+More ordered xy coords.
+
+```{r,network4,fig.height=6,fig.width=7}
+
+null <- lapply(c(1:10,39),function(i) {
+
+set.seed(i) ; myseeds <- sample(0:10000)
+SIZE=25
+set.seed(myseeds[1]) ; x <- sample(0:10,size=SIZE*100,replace=TRUE)
+set.seed(myseeds[2]) ; y <- sample(0:10,size=SIZE*100,replace=TRUE)
+set.seed(myseeds[5]) ; mycols <- sample(skycols,size=length(x),replace=TRUE)
+
+df <- data.frame(x,y)
+df <- unique(df)[1:SIZE,]
+
+plot(df,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white",xlim=c(0,10),ylim=c(0,10))
+
+set.seed(myseeds[6]) ; df2 <- df[sample(1:SIZE,size=SIZE,replace=T),]
+lines(df2,col="darkgray",lwd=5)
+lines(df,col="lightgray",lwd=5)
+
+set.seed(myseeds[7]) ; mycex <- rnorm(n=50,mean=3.5,sd=1)
+
+points(df, cex=mycex, pch=19, col=mycols)
+
+rect(0, 3, 10, 7,col="white",border="black",lwd=3)
+
+text(5,5,"RN4CB", family="TeX Gyre Adventor",font=1, cex=9)
+mtext(i)
+})
+
+```
+
+## Array grid red/blue
+
+```{r,points,fig.height=7,fig.width=7}
+
+null <- lapply(1:10,function(i) {
+
+set.seed(i) ; myseeds <- sample(0:10000)
+SIZE=15
+
+my_palette <- colorRampPalette(c("blue", "gray", "red"))(n = 50)
+
+xy <- expand.grid(1:6,1:6)
+set.seed(myseeds[7]) ; mycex <- rnorm(n=nrow(xy),mean=5,sd=1)
+set.seed(myseeds[5]) ; mycols <- sample(my_palette,size=nrow(xy),replace=TRUE)
+
+plot(xy,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white",xlim=c(0,7),ylim=c(0,7))
+
+set.seed(myseeds[6]) ; df <- xy[sample(1:nrow(xy),size=SIZE,replace=T),]
+set.seed(myseeds[8]) ; df2 <- xy[sample(1:nrow(xy),size=SIZE,replace=T),]
+
+lines(df,col="lightgray",lwd=4)
+lines(df2,col="darkgray",lwd=4)
+
+points(xy, cex=mycex, pch=19, col=mycols)
+
+rect(0.6, 2.6, 6.45, 4.4, col="white",border="black",lwd=3.5)
+
+text(3.5,3.5,"RN4CB", family="TeX Gyre Adventor",font=1, cex=8)
+mtext(i)
+
+})
+
+```
+
+## Array grid Viridis
+
+```{r,points2,fig.height=7,fig.width=7}
+
+null <- lapply(1:10,function(i) {
+
+set.seed(i) ; myseeds <- sample(0:10000)
+SIZE=15
+
+my_palette <-  viridis(50)
+
+xy <- expand.grid(1:6,1:6)
+set.seed(myseeds[7]) ; mycex <- rnorm(n=nrow(xy),mean=5,sd=1)
+set.seed(myseeds[5]) ; mycols <- sample(my_palette,size=nrow(xy),replace=TRUE)
+
+plot(xy,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="white",xlim=c(0,7),ylim=c(0,7))
+
+set.seed(myseeds[6]) ; df <- xy[sample(1:nrow(xy),size=SIZE,replace=T),]
+set.seed(myseeds[8]) ; df2 <- xy[sample(1:nrow(xy),size=SIZE,replace=T),]
+
+lines(df,col="lightgray",lwd=4)
+lines(df2,col="darkgray",lwd=4)
+
+points(xy, cex=mycex, pch=19, col=mycols)
+
+rect(0.6, 2.6, 6.45, 4.4, col="white",border="black",lwd=3.5)
+
+text(3.5,3.5,"RN4CB", family="TeX Gyre Adventor",font=1, cex=8)
+mtext(i)
+
+})
+
+```
+
+## Array grid Viridis space
+
+Now try for diamond pattern.
+
+```{r,points3,fig.height=7,fig.width=7}
+
+null <- lapply(1:10,function(i) {
+
+set.seed(i) ; myseeds <- sample(0:10000)
+SIZE=15
+
+my_palette <-  viridis(50)
+
+xy <- expand.grid(1:7,1:7)
+xy <- xy[seq(2,nrow(xy),2),]
+set.seed(myseeds[7]) ; mycex <- rnorm(n=nrow(xy),mean=7,sd=1)
+set.seed(myseeds[5]) ; mycols <- sample(my_palette,size=nrow(xy),replace=TRUE)
+
+plot(xy,xaxt="n", yaxt="n", xlab="",ylab="",col="white",xlim=c(0.5,7.5),ylim=c(0.5,7.5))
+
+set.seed(myseeds[6]) ; df <- xy[sample(1:nrow(xy),size=SIZE,replace=T),]
+set.seed(myseeds[8]) ; df2 <- xy[sample(1:nrow(xy),size=SIZE,replace=T),]
+
+lines(df,col="lightgray",lwd=5)
+lines(df2,col="darkgray",lwd=5)
+
+points(xy, cex=mycex, pch=19, col=mycols)
+
+rect(1, 3, 7, 5, col="white",border="black",lwd=3.5)
+
+text(4,4,"RN4CB", family="TeX Gyre Adventor",font=1, cex=8)
+mtext(i)
+
+})
+
+```
+
+## Sin waves
+
+
+```{r,sincurve,fig.height=5,fig.width=5}
+
+curve(sin, to = 4*pi)
+curve(cos, to = 4*pi,add=TRUE)
+
+```
+
+Now a basic plot
+
+```{r,sin,fig.height=5,fig.width=5}
+
+x <- seq(0,2*pi,length.out=50)
+y <- sin(x)
+z <- cos(x)
+plot(x/2/pi*10, y, type='l',ylim=c(-2,2),lwd=2,xaxt="n", yaxt="n", bty="n",xlab="",ylab="")
+lines(x/2/pi*10, z, type='l',lwd=2)
+
+x2 <- seq(0,2*pi,length.out=10)
+y2 <- sin(x2)
+z2 <- cos(x2)
+
+points(x2/2/pi*10, y2, type='p',cex=4)
+points(x2/2/pi*10, z2, type='p',cex=4)
+
+null <- lapply(1:length(x2), function(i) {
+  lines(c(x2[i],x2[i])/2/pi*10 ,c(y2[i],z2[i]) ,lwd=3)
+})
+
+
+```
+
+## DNA helix
+
+Need to make it longer.
+
+```{r,sin_long}
+
+par(mar=c(0,1,1.5,0))
+
+mycols <- plasma(5)[1:4]
+mycols2 <- rev(mycols)
+
+x <- seq(0,5*pi,length.out=125)
+y <- sin(x)
+z <- cos(x)
+plot(x/2/pi*10, y, type='l',ylim=c(-1,6),lwd=15,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="darkgray")
+lines(x/2/pi*10, z, type='l',lwd=12,col="darkgray")
+
+x2 <- seq(0,5*pi,length.out=25)
+y2 <- sin(x2)
+z2 <- cos(x2)
+
+points(x2/2/pi*10, y2, type='p',cex=1,col=mycols,pch=19)
+points(x2/2/pi*10, z2, type='p',cex=1,col=mycols2,pch=19)
+
+null <- lapply(1:length(x2), function(i) {
+  lines(c(x2[i], x2[i])/2/pi*10, c(y2[i], mean(c(z2[i],y2[i])) ) ,lwd=15, col=mycols[i%%4+1])
+  lines(c(x2[i], x2[i])/2/pi*10, c(mean(c(z2[i],y2[i])), z2[i] ) ,lwd=15, col=mycols2[i%%4+1])
+})
+
+text(10,2,"RN4CB", family="TeX Gyre Adventor",font=1, cex=10)
+
+```
+
+# Short helix with patchwork
+
+Shorten by 50%
+
+```{r,helix_long}
+
+par(mar=c(0,1,1.5,0))
+
+#mycols <- viridis(5)[1:4]
+XMAX <- ceiling(max(x)/2/pi*10)+1
+XMIN <- 0
+
+YMIN=-1
+YMAX=5
+plot(x/2/pi*10, y, type='l',ylim=c(-1,5),lwd=15,xaxt="n", yaxt="n",xlab="",ylab="",col="white", bty="n")
+
+df <- expand.grid(seq(XMIN,XMAX,2),seq(-1,4,0.5))
+mycols <- rev(tail(inferno(200),50))
+set.seed(42) ; points(df,pch=15,cex=7,col=sample(mycols))
+
+mycols <- plasma(5)[1:4]
+mycols2 <- rev(mycols)
+
+x <- seq(0,5*pi,length.out=125)
+y <- sin(x)
+z <- cos(x)
+#plot(x/2/pi*10, y, type='l',ylim=c(-1,4),lwd=15,xaxt="n", yaxt="n", bty="n",xlab="",ylab="",col="darkgray")
+lines(x/2/pi*10, y, type='l',lwd=20,,col=mako(3)[2])
+lines(x/2/pi*10, z, type='l',lwd=20,col=mako(3)[2])
+
+x2 <- seq(0,5*pi,length.out=25)
+y2 <- sin(x2)
+z2 <- cos(x2)
+
+points(x2/2/pi*10, y2, type='p',cex=1,col=mycols,pch=19)
+points(x2/2/pi*10, z2, type='p',cex=1,col=mycols2,pch=19)
+
+null <- lapply(1:length(x2), function(i) {
+  lines(c(x2[i], x2[i])/2/pi*10, c(y2[i], mean(c(z2[i],y2[i])) ) ,lwd=15, col=mycols[i%%4+1])
+  lines(c(x2[i], x2[i])/2/pi*10, c(mean(c(z2[i],y2[i])), z2[i] ) ,lwd=15, col=mycols2[i%%4+1])
+})
+
+
+text(10,2,"RN4CB", family="TeX Gyre Adventor",font=2, cex=10, col="black")
+
+```
+
+## Binary data background
+
+```{r,bigmatrix}
+
+mysize=42
+plot(0:mysize, 0:mysize, type='p',xlim=c(0,mysize),ylim=c(0,mysize),lwd=15,xaxt="n", yaxt="n",xlab="",ylab="",col="white", bty="n")
+df <- expand.grid(0:mysize,0:mysize)
+#my_palette <- c("white","lightgray","gray","darkgray","black")
+my_palette <- plasma(10)[6:9]
+mycols <- sample(my_palette,nrow(df),replace=TRUE)
+points(df,col=mycols,pch=15,cex=1.5)
+
+rect(5, 16, 37, 26, col="white",border="black",lwd=3)
+
+text(mysize/2,mysize/2,"RN4CB", family="TeX Gyre Adventor",font=1, cex=8, col="black")
+
+```
+
+rect(xleft, ybottom, xright, ytop, density = NULL, angle = 45,
+
+
+
+
+## Session information
+
+```{r,session}
+
+sessionInfo()
+
+```
