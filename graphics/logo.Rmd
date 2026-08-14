@@ -14,7 +14,7 @@ theme: simplex
 Source: https://github.com/markziemann/RN4CB
 
 
-## Intro
+# Intro
 
 In this script, I'm attempting to do some logo design with R because I don't want
 to use AI for this task.
@@ -103,7 +103,7 @@ par(mfrow=c(1,1))
 ```
 
 
-## Candidate network logo
+# Candidate network logo
 
 "TeX Gyre Adventor"
 
@@ -130,7 +130,7 @@ text(5.1,5,"RN4CB", family="TeX Gyre Adventor",font=1, cex=10)
 
 ```
 
-## Candidate grid
+# Candidate grid
 
 ```{r,network2,fig.height=4,fig.width=7}
 
@@ -156,7 +156,7 @@ text(5.1,5,"RN4CB", family="TeX Gyre Adventor",font=1, cex=10)
 
 ```
 
-## Network chaos
+# Network chaos
 
 This one looks OK.
 
@@ -191,7 +191,7 @@ mtext(i)
 
 ```
 
-## Network grid
+# Network grid
 
 More ordered xy coords.
 
@@ -226,7 +226,7 @@ mtext(i)
 
 ```
 
-## Array grid red/blue
+# Array grid red/blue
 
 ```{r,points,fig.height=7,fig.width=7}
 
@@ -260,7 +260,7 @@ mtext(i)
 
 ```
 
-## Array grid Viridis
+# Array grid Viridis
 
 ```{r,points2,fig.height=7,fig.width=7}
 
@@ -294,7 +294,7 @@ mtext(i)
 
 ```
 
-## Array grid Viridis space
+# Array grid Viridis space
 
 Now try for diamond pattern.
 
@@ -331,7 +331,7 @@ mtext(i)
 
 ```
 
-## Sin waves
+# Sin waves
 
 
 ```{r,sincurve,fig.height=5,fig.width=5}
@@ -365,7 +365,7 @@ null <- lapply(1:length(x2), function(i) {
 
 ```
 
-## DNA helix
+# DNA helix
 
 Need to make it longer.
 
@@ -445,7 +445,7 @@ text(10,2,"RN4CB", family="TeX Gyre Adventor",font=2, cex=10, col="black")
 
 ```
 
-## Binary data background
+# Binary data background
 
 ```{r,bigmatrix}
 
