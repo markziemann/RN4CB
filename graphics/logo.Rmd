@@ -4,6 +4,7 @@ author: "Mark Ziemann"
 date: "`r Sys.Date()`"
 output:
   html_document:
+    code_folding: hide
     toc: true
     toc_float: true
     fig_width: 7
@@ -102,6 +103,21 @@ par(mfrow=c(1,1))
 
 ```
 
+# Font library
+
+Some good fonts worth mentioning:
+
+* Retro https://fontlibrary.org/en/font/retroscape
+
+* Retro https://fontlibrary.org/en/font/press-start-2p
+
+* Modern https://fontlibrary.org/en/font/square-grotesk
+
+* Modern https://fontlibrary.org/en/font/assailand
+
+* Simple https://fontlibrary.org/en/font/source-code-pro {RN4CB}
+
+* Simple https://fontlibrary.org/en/font/metropolitano light
 
 # Candidate network logo
 
@@ -415,7 +431,7 @@ YMAX=5
 plot(x/2/pi*10, y, type='l',ylim=c(-1,5),lwd=15,xaxt="n", yaxt="n",xlab="",ylab="",col="white", bty="n")
 
 df <- expand.grid(seq(XMIN,XMAX,2),seq(-1,4,0.5))
-mycols <- rev(tail(inferno(200),50))
+mycols <- rev(tail(inferno(300),50))
 set.seed(42) ; points(df,pch=15,cex=7,col=sample(mycols))
 
 mycols <- plasma(5)[1:4]
@@ -440,14 +456,15 @@ null <- lapply(1:length(x2), function(i) {
   lines(c(x2[i], x2[i])/2/pi*10, c(mean(c(z2[i],y2[i])), z2[i] ) ,lwd=15, col=mycols2[i%%4+1])
 })
 
-
-text(10,2,"RN4CB", family="TeX Gyre Adventor",font=2, cex=10, col="black")
+text(10,2,"RN4CB", family="TeX Gyre Adventor",font=2, cex=10, col=mako(3)[2])
 
 ```
 
 # Binary data background
 
 ```{r,bigmatrix}
+
+par(mar=c(0,1,1.5,0))
 
 mysize=42
 plot(0:mysize, 0:mysize, type='p',xlim=c(0,mysize),ylim=c(0,mysize),lwd=15,xaxt="n", yaxt="n",xlab="",ylab="",col="white", bty="n")
@@ -457,13 +474,113 @@ my_palette <- plasma(10)[6:9]
 mycols <- sample(my_palette,nrow(df),replace=TRUE)
 points(df,col=mycols,pch=15,cex=1.5)
 
-rect(5, 16, 37, 26, col="white",border="black",lwd=3)
+rect(3, 16, 39, 26, col="white",border="black",lwd=3)
 
 text(mysize/2,mysize/2,"RN4CB", family="TeX Gyre Adventor",font=1, cex=8, col="black")
 
 ```
 
-rect(xleft, ybottom, xright, ytop, density = NULL, angle = 45,
+# Binary data background diamond
+
+```{r,bigmatrix_diamond}
+
+par(mar=c(0,1,1.5,0))
+mysize=42
+plot(0:mysize, 0:mysize, type='p',xlim=c(0,mysize),ylim=c(0,mysize),lwd=15,xaxt="n", yaxt="n",xlab="",ylab="",col="white", bty="n")
+df <- expand.grid(0:mysize,0:mysize)
+
+df2 <- df[seq(2,nrow(df),2),]
+
+my_palette <- plasma(10)[6:9]
+set.seed(42) ; mycols <- sample(my_palette,nrow(df2),replace=TRUE)
+points(df2,col=mycols,pch=18,cex=3)
+
+rect(3, 16, 39, 26, col=NA, border="white",lwd=12)
+rect(3, 16, 39, 26, col="white",border="black",lwd=2)
+
+text(mysize/2,mysize/2,"RN4CB", family="TeX Gyre Adventor",font=1, cex=8, col="black")
+text(mysize*0.12,mysize/2,"{", family="TeX Gyre Adventor",font=1, cex=8, col="black")
+text(mysize*0.88,mysize/2,"}", family="TeX Gyre Adventor",font=1, cex=8, col="black")
+
+rect(0, 0, mysize, mysize, col=NA, border="white",lwd=23)
+rect(0, 0, mysize, mysize, col=NA, border="black",lwd=2)
+
+```
+
+# Something hexagonal
+
+```{r,hex}
+
+par(mar=c(0,1,1.5,0))
+
+my_palette <- colorRampPalette(c("white", viridis(10)[1]))(n = 10)
+
+x <- c(6,12,12,6,0,0,6)
+y <- c(0,3,9,12,9,3,0)
+
+mysize=12
+plot(0:mysize, 0:mysize, type='p',xlim=c(0,mysize),ylim=c(0,mysize),lwd=15,xaxt="n", yaxt="n",xlab="",ylab="",col="white", bty="n")
+
+polygon(x,y, col = my_palette[9], border = my_palette[5], lwd = 15)
+
+lines( (x/5)+4.8, (y/5)+4.8 , col = my_palette[8], lwd = 2)
+lines( (x/3)+4, (y/3)+4 , col = my_palette[8], lwd = 2)
+lines( (x/2)+3, (y/2)+3 , col = my_palette[8], lwd = 2)
+lines( (x/1.5)+2, (y/1.5)+2 , col = my_palette[8], lwd = 2)
+lines( (x*0.9)+0.6, (y*0.9)+0.6 , col = my_palette[8], lwd = 2)
+lines( (x*0.8)+1.2, (y*0.8)+1.2 , col = my_palette[8], lwd = 2)
+
+x2 <- (x*0.9)+0.6
+y2 <- (y*0.9)+0.6
+df2 <- data.frame(x2,y2)
+
+lines(  df2[c(1,4),1] , df2[c(1,4),2] , col = my_palette[8], lwd = 2)
+lines(  df2[c(6,3),1] , df2[c(6,3),2] , col = my_palette[8], lwd = 2)
+lines(  df2[c(5,2),1] , df2[c(5,2),2] , col = my_palette[8], lwd = 2)
+
+points( 6,6, col = my_palette[8], cex = 2, pch=19)
+points( (x/5)+4.8, (y/5)+4.8 , col = my_palette[8], cex = 2, pch=19)
+points( (x/3)+4, (y/3)+4 , col = my_palette[8], cex = 2, pch=19)
+points( (x/2)+3, (y/2)+3 , col = my_palette[8], cex = 2, pch=19)
+points( (x/1.5)+2, (y/1.5)+2 , col = my_palette[8], cex = 2, pch=19)
+points( (x*0.9)+0.6, (y*0.9)+0.6 , col = my_palette[8], cex = 2, pch=19)
+points( (x*0.8)+1.2, (y*0.8)+1.2 , col = my_palette[8], cex = 2, pch=19)
+
+text(mysize*0.1,mysize/2-0.1+1.5,"{", family="TeX Gyre Adventor",font=2, cex=7.5, col=my_palette[3])
+text(mysize*0.9,mysize/2-0.1+1.5,"}", family="TeX Gyre Adventor",font=2, cex=7.5, col=my_palette[3])
+text(mysize/2,mysize/2+1.5," RN4CB ", family="TeX Gyre Adventor",font=2, cex=8, col=my_palette[3])
+text(mysize*0.3,mysize/2-0.1-0.7,"Reproducibility", family="TeX Gyre Adventor",font=1, cex=2, col=my_palette[3],adj=c(0,0))
+text(mysize*0.3,mysize/2-0.1-1.5,"Network", family="TeX Gyre Adventor",font=1, cex=2, col=my_palette[3],adj=c(0,0))
+text(mysize*0.3,mysize/2-0.1-2.3,"For", family="TeX Gyre Adventor",font=1, cex=2, col=my_palette[3],adj=c(0,0))
+text(mysize*0.3,mysize/2-0.1-3.1,"Computational", family="TeX Gyre Adventor",font=1, cex=2, col=my_palette[3],adj=c(0,0))
+text(mysize*0.3,mysize/2-0.1-3.9,"Biology", family="TeX Gyre Adventor",font=1, cex=2, col=my_palette[3],adj=c(0,0))
+
+```
+
+# Triangles
+
+Yeah this isn't good.
+
+```{r,triangles}
+
+par(mar=c(0,1,1.5,0))
+mysize=42
+plot(0:mysize, 0:mysize, type='p',xlim=c(0,mysize),ylim=c(0,mysize),lwd=15,xaxt="n", yaxt="n",xlab="",ylab="",col="white", bty="n")
+df <- expand.grid(0:mysize,0:mysize)
+
+null <- lapply(seq(0,30,6),function(j) {
+  lapply(seq(0,30,6),function(i) {
+    if (j%%12==0) { m <- 0 } else { m <- 3 }
+    x_coords <- c(0+i+m, 6+i+m, 3+i+m)
+    y_coords <- c(0+j, 0+j, 6+j)
+    polygon(x_coords, y_coords, col = "lightblue", border = "blue", lwd = 2)
+    x_coords <- c(3+i+m, 9+i+m, 6+i+m)
+    y_coords <- c(6+j, 6+j, 0+j)
+    polygon(x_coords, y_coords, col = "lightblue", border = "blue", lwd = 2)
+  })
+})
+
+```
 
 
 
